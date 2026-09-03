@@ -7,7 +7,8 @@ horizons of approximately 1–7 months.
 
 ## Status
 
-The project is in **Phase 0 readiness and reproducibility setup**. No modelling has started.
+Phase 1 is closed and leakage-safe `validation-v1` is frozen. Phase 2 modelling may proceed
+under the observed-only, recursion-disabled policy; no modelling has started yet.
 
 The documented final evaluation weights are:
 
@@ -80,11 +81,12 @@ are confirmed.
 - [Competition rules](docs/competition_rules.md)
 - [Organizer clarification register](docs/organizer_clarifications.md)
 - [Compute and reproducibility policy](docs/compute_reproducibility_policy.md)
-- [Draft validation protocol](docs/validation_protocol.md)
+- [Frozen validation protocol](docs/validation_protocol.md)
 - [Competition evidence matrix](docs/competition_evidence_matrix.md)
 - [Experiment registry](experiments/README.md)
 - [Living final-report outline](reports/final_report_outline.md)
 - [Phase closeouts](docs/phase_closeouts/README.md)
 - [Decision records](docs/decisions/README.md)
 
-These structures do not change project status: no modelling has started.
+The frozen protocol and compact audit manifest establish the Phase 2 evaluation boundary; no
+model training or scoring has started.

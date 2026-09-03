@@ -2,12 +2,23 @@
 
 These questions have not been sent or answered.
 
-## Must resolve before modelling
+## Unresolved policy questions
 
 1. Are AI coding assistants such as ChatGPT or Codex permitted, and is disclosure required?
 2. What precisely counts as prohibited AutoML, including tuning and pipeline-search tools?
-3. May earlier model predictions feed later masked months without violating future-information rules?
+3. May earlier model predictions feed later masked months without violating future-information
+   rules? If permitted, must generated values remain explicitly distinguished from observed TWS?
 4. How is each effective 1–7-month horizon defined for evaluation and validation?
+
+5. Are supplied current-month SPEI and soil-moisture values considered available at the
+   prediction event for operational forecasting, or are they competition-only conveniences?
+6. What observation, processing, publication, and revision dates apply to those supplied
+   current-month covariates?
+
+These questions do not block Phase 2 under frozen `recursion-disabled-v1`. Recursive results,
+if later authorized, require a separately named policy and may never be pooled with the
+principal observed-only score. Operational forecasting claims remain deferred until publication
+latency is established.
 
 ## Must resolve before external-data use
 
@@ -29,4 +40,3 @@ These questions have not been sent or answered.
 2. Does the paid-service restriction cover every paid compute/storage service or only inaccessible tools?
 3. Is the Train target intentionally embedded in `Train.csv`, despite the Data-tab wording?
 4. Are there runtime limits or prescribed dependency-lock formats for reproducibility review?
-

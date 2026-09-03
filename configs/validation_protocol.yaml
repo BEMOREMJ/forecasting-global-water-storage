@@ -1,13 +1,70 @@
-status: draft_not_approved
-version: unassigned
-folds: null
-validation_windows: null
-requirements:
-  temporal_ordering: mandatory
-  prediction_time_availability: mandatory
-  future_observations: prohibited
-  masked_test_and_horizon_audit: phase_1_required
-  horizon_specific_evaluation: required_later
-  geographic_or_subgroup_evaluation: required_later
-change_control: version_before_experiment_use
-
+schema:
+  version: validation-audit-v1
+  status: approved
+  implementation_commit: provisional
+validation_version: validation-v1
+folds:
+  - fold_id: F01
+    origin: 2004-09-01
+  - fold_id: F02
+    origin: 2008-12-01
+offsets:
+  inputs: [0, 4, 5, 6, 9, 10, 11, 12, 15, 16, 17, 18, 19, 20, 21, 34, 38, 39]
+  targets: [1, 5, 6, 7, 10, 11, 12, 13, 16, 17, 18, 19, 20, 21, 22, 35, 39, 40]
+history_gate:
+  minimum_observations: 12
+  minimum_span_months: 12
+horizons:
+  minimum: 1
+  maximum: 7
+  expected_counts: {1: 184416, 2: 122824, 3: 91956, 4: 61207, 5: 30599, 6: 30500, 7: 30463}
+diagnostics:
+  latitude_bands: ["[-90,-60)", "[-60,-30)", "[-30,0)", "[0,30)", "[30,60)", "[60,90]"]
+  spei_bins: ["(-inf,-2)", "[-2,-1.5)", "[-1.5,-1)", "[-1,1)", "[1,1.5)", "[1.5,2)", "[2,inf)"]
+policies:
+  mask: mask-exact-complete-v1
+  tws_provenance: tws-observed-only-v1
+  recursion: recursion-disabled-v1
+  metric: rmse-row-pooled-v1
+seeds:
+  exact_mask: null
+  synthetic: 20260903
+expected:
+  folds:
+    F01:
+      fitting_rows: 359007
+      retained_rows: 278059
+      retained_locations: 15526
+      excluded_locations: 189
+      excluded_template_rows: 2902
+      path_incomplete_locations: 153
+      history_excluded_locations: 36
+      horizon_counts: {1: 92995, 2: 61918, 3: 46318, 4: 30782, 5: 15412, 6: 15334, 7: 15300}
+    F02:
+      fitting_rows: 1155158
+      retained_rows: 273906
+      retained_locations: 15233
+      excluded_locations: 482
+      excluded_template_rows: 7055
+      path_incomplete_locations: 482
+      history_excluded_locations: 0
+      horizon_counts: {1: 91421, 2: 60906, 3: 45638, 4: 30425, 5: 15187, 6: 15166, 7: 15163}
+  pooled_retained_rows: 551965
+  distinct_pooled_target_keys: 551965
+  excluded_fold_location_instances: 671
+  unique_excluded_locations: 617
+  latitude_band_exclusions:
+    F01: {"[-90,-60)": 0, "[-60,-30)": 3, "[-30,0)": 61, "[0,30)": 110, "[30,60)": 7, "[60,90]": 8}
+    F02: {"[-90,-60)": 0, "[-60,-30)": 6, "[-30,0)": 57, "[0,30)": 335, "[30,60)": 56, "[60,90]": 28}
+sources:
+  official_manifest: {name: official-manifest, path: configs/data_manifest.json, size: 918, sha256: 445ce8f92d21abe7e103ad77f38091a4f55e0466d31515d33fbd40c06fb8e533}
+  train_cache: {name: train-cache, path: data/processed/Train.parquet, size: 116573052, sha256: 47888bf5c106f92249e3767b830177d10668d5a73b3505bd7fe276c32accb183}
+  test_cache: {name: test-cache, path: data/processed/Test.parquet, size: 11721748, sha256: 744a9f7394f080899013a06d1c9ae089e05c3db5294c0e11fb5cacd6fb1cf012}
+  sample_submission_cache: {name: sample-submission-cache, path: data/processed/SampleSubmission.parquet, size: 273900, sha256: a161b8ec703a01fac1c3776f2bf7864f8e3e570fde98170b4be97dd84e787821}
+  test_mask_template: {name: test-mask-source, path: data/processed/Test.parquet, size: 11721748, sha256: 744a9f7394f080899013a06d1c9ae089e05c3db5294c0e11fb5cacd6fb1cf012}
+  validation_core_source: {name: validation-core-source, path: src/drought_forecasting/validation_core.py, size: 5324, sha256: 9d79ae57c562916f8d9a19e7bfc6e3b9a729c60ed7328ef7dca126650ec7f2ff}
+  validation_folds_source: {name: validation-folds-source, path: src/drought_forecasting/validation_folds.py, size: 37248, sha256: e25606db6f5419b318c2c0ec318996939ce9616bf0def7c96916cf38c81c9de5}
+  validation_audit_source: {name: validation-audit-source, path: src/drought_forecasting/validation_audit.py, size: 27217, sha256: 6664538712e1a4ad7346843b88cc53cb415634745ab204c4c0915717b7d85616}
+output:
+  root: reports
+  overwrite: false
