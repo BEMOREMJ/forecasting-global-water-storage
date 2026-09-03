@@ -1,0 +1,30 @@
+{
+  "artifacts": [
+    {
+      "path": "data/raw/SampleSubmission.csv",
+      "sha256": "77881bc7257791d583c5a1f496a5639864d490a0237515338fc5305ec943db22",
+      "size_bytes": 6105524
+    },
+    {
+      "path": "data/raw/Test.csv",
+      "sha256": "314da7996fa947b30797d82ea8d0ea34240fe52683ecf102a21c37f00f61c196",
+      "size_bytes": 34365988
+    },
+    {
+      "path": "data/raw/Train.csv",
+      "sha256": "97ff1912b35871574a01900c24a792a9a418653e87f01dccc1788c6838d94b1f",
+      "size_bytes": 289126551
+    },
+    {
+      "path": "references/official/StarterNotebook.ipynb",
+      "sha256": "a9adf72aa1b75c41c72357f1e5bbe2e1b2c90d787d0c9c9fbce7a46bfb3874b4",
+      "size_bytes": 1236676
+    },
+    {
+      "path": "references/official/Trustworthiness_Evaluation.pdf",
+      "sha256": "217d7da35de4bff29d66377f20fd80d2fc26ed9e4946060613bb4f9f4de1c792",
+      "size_bytes": 94458
+    }
+  ],
+  "schema_version": 1
+}

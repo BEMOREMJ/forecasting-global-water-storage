@@ -1,0 +1,13 @@
+status: draft_not_approved
+version: unassigned
+folds: null
+validation_windows: null
+requirements:
+  temporal_ordering: mandatory
+  prediction_time_availability: mandatory
+  future_observations: prohibited
+  masked_test_and_horizon_audit: phase_1_required
+  horizon_specific_evaluation: required_later
+  geographic_or_subgroup_evaluation: required_later
+change_control: version_before_experiment_use
+

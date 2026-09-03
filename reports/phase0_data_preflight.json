@@ -1,0 +1,224 @@
+{
+  "artifacts": {
+    "sample_submission": {
+      "bounded_csv_inspection": {
+        "header": [
+          "ID",
+          "Target"
+        ],
+        "inferred_sample_dtypes": {
+          "ID": "String",
+          "Target": "Int64"
+        },
+        "rough_full_memory_estimate_bytes": 7490673,
+        "rough_full_memory_estimate_note": "Linear extrapolation from the bounded Polars sample and provisional physical-line row estimate; allocator, parser, string, and temporary-buffer overhead can differ.",
+        "sample_dataframe_estimated_bytes": 266609,
+        "sample_missing_counts": {
+          "ID": 0,
+          "Target": 0
+        },
+        "sample_row_limit": 10000,
+        "sample_rows_parsed": 10000
+      },
+      "byte_size": 6105524,
+      "last_modified_utc": "2026-09-02T18:51:41.342645Z",
+      "path": "data/raw/SampleSubmission.csv",
+      "physical_newline_characters": 280962,
+      "provisional_data_row_estimate": 280961,
+      "provisional_row_count_note": "Physical-line estimate only; quoted multiline fields can make it inaccurate. This is not a verified parsed row count.",
+      "sha256": "77881bc7257791d583c5a1f496a5639864d490a0237515338fc5305ec943db22"
+    },
+    "starter_notebook": {
+      "byte_size": 1236676,
+      "last_modified_utc": "2026-09-02T18:51:29.957172Z",
+      "path": "references/official/StarterNotebook.ipynb",
+      "sha256": "a9adf72aa1b75c41c72357f1e5bbe2e1b2c90d787d0c9c9fbce7a46bfb3874b4"
+    },
+    "test": {
+      "bounded_csv_inspection": {
+        "header": [
+          "ID",
+          "time",
+          "lat",
+          "lon",
+          "TWS_t",
+          "SPEI_01_t",
+          "SPEI_03_t",
+          "SPEI_06_t",
+          "SPEI_12_t",
+          "SOIL_MOISTURE_t",
+          "month_sin",
+          "month_cos",
+          "TWS_t_masked"
+        ],
+        "inferred_sample_dtypes": {
+          "ID": "String",
+          "SOIL_MOISTURE_t": "Float64",
+          "SPEI_01_t": "Float64",
+          "SPEI_03_t": "Float64",
+          "SPEI_06_t": "Float64",
+          "SPEI_12_t": "Float64",
+          "TWS_t": "Float64",
+          "TWS_t_masked": "Boolean",
+          "lat": "Float64",
+          "lon": "Float64",
+          "month_cos": "Float64",
+          "month_sin": "Float64",
+          "time": "String"
+        },
+        "rough_full_memory_estimate_bytes": 30564651,
+        "rough_full_memory_estimate_note": "Linear extrapolation from the bounded Polars sample and provisional physical-line row estimate; allocator, parser, string, and temporary-buffer overhead can differ.",
+        "sample_dataframe_estimated_bytes": 1087861,
+        "sample_missing_counts": {
+          "ID": 0,
+          "SOIL_MOISTURE_t": 0,
+          "SPEI_01_t": 0,
+          "SPEI_03_t": 0,
+          "SPEI_06_t": 0,
+          "SPEI_12_t": 0,
+          "TWS_t": 0,
+          "TWS_t_masked": 0,
+          "lat": 0,
+          "lon": 0,
+          "month_cos": 0,
+          "month_sin": 0,
+          "time": 0
+        },
+        "sample_row_limit": 10000,
+        "sample_rows_parsed": 10000
+      },
+      "byte_size": 34365988,
+      "last_modified_utc": "2026-09-02T18:51:51.053554Z",
+      "path": "data/raw/Test.csv",
+      "physical_newline_characters": 280962,
+      "provisional_data_row_estimate": 280961,
+      "provisional_row_count_note": "Physical-line estimate only; quoted multiline fields can make it inaccurate. This is not a verified parsed row count.",
+      "sha256": "314da7996fa947b30797d82ea8d0ea34240fe52683ecf102a21c37f00f61c196"
+    },
+    "train": {
+      "bounded_csv_inspection": {
+        "header": [
+          "sample_id",
+          "time",
+          "lat",
+          "lon",
+          "TWS_t",
+          "SPEI_01_t",
+          "SPEI_03_t",
+          "SPEI_06_t",
+          "SPEI_12_t",
+          "SOIL_MOISTURE_t",
+          "month_sin",
+          "month_cos",
+          "target"
+        ],
+        "inferred_sample_dtypes": {
+          "SOIL_MOISTURE_t": "Float64",
+          "SPEI_01_t": "Float64",
+          "SPEI_03_t": "Float64",
+          "SPEI_06_t": "Float64",
+          "SPEI_12_t": "Float64",
+          "TWS_t": "Float64",
+          "lat": "Float64",
+          "lon": "Float64",
+          "month_cos": "Float64",
+          "month_sin": "Float64",
+          "sample_id": "String",
+          "target": "Float64",
+          "time": "String"
+        },
+        "rough_full_memory_estimate_bytes": 251277104,
+        "rough_full_memory_estimate_note": "Linear extrapolation from the bounded Polars sample and provisional physical-line row estimate; allocator, parser, string, and temporary-buffer overhead can differ.",
+        "sample_dataframe_estimated_bytes": 1166549,
+        "sample_missing_counts": {
+          "SOIL_MOISTURE_t": 0,
+          "SPEI_01_t": 0,
+          "SPEI_03_t": 0,
+          "SPEI_06_t": 0,
+          "SPEI_12_t": 0,
+          "TWS_t": 0,
+          "lat": 0,
+          "lon": 0,
+          "month_cos": 0,
+          "month_sin": 0,
+          "sample_id": 0,
+          "target": 0,
+          "time": 0
+        },
+        "sample_row_limit": 10000,
+        "sample_rows_parsed": 10000
+      },
+      "byte_size": 289126551,
+      "last_modified_utc": "2026-09-02T18:53:21.883290Z",
+      "path": "data/raw/Train.csv",
+      "physical_newline_characters": 2154022,
+      "provisional_data_row_estimate": 2154021,
+      "provisional_row_count_note": "Physical-line estimate only; quoted multiline fields can make it inaccurate. This is not a verified parsed row count.",
+      "sha256": "97ff1912b35871574a01900c24a792a9a418653e87f01dccc1788c6838d94b1f"
+    },
+    "trustworthiness_pdf": {
+      "byte_size": 94458,
+      "last_modified_utc": "2026-09-02T18:51:33.163827Z",
+      "path": "references/official/Trustworthiness_Evaluation.pdf",
+      "sha256": "217d7da35de4bff29d66377f20fd80d2fc26ed9e4946060613bb4f9f4de1c792"
+    }
+  },
+  "bounded_sample_row_limit": 10000,
+  "header_validation": {
+    "discrepancies": [],
+    "sample_submission_exact_id_target": true,
+    "test_identifier_columns": [
+      "ID"
+    ],
+    "test_mask_flag_present": true,
+    "test_target_columns": [],
+    "train_identifier_columns": [
+      "sample_id"
+    ],
+    "train_target_columns": [
+      "target"
+    ]
+  },
+  "later_operation_safety": {
+    "combined_full_csv_parse": {
+      "classification": "better suited to free Colab",
+      "conservative_working_memory_bytes": 578664856,
+      "estimated_dataframe_bytes": 289332428,
+      "local_headroom_after_required_reserve_bytes": 0,
+      "required_free_memory_reserve_bytes": 5116398796
+    },
+    "full_parse_sample_submission": {
+      "classification": "better suited to free Colab",
+      "conservative_working_memory_bytes": 14981346,
+      "estimated_dataframe_bytes": 7490673,
+      "local_headroom_after_required_reserve_bytes": 0,
+      "required_free_memory_reserve_bytes": 5116398796
+    },
+    "full_parse_test": {
+      "classification": "better suited to free Colab",
+      "conservative_working_memory_bytes": 61129302,
+      "estimated_dataframe_bytes": 30564651,
+      "local_headroom_after_required_reserve_bytes": 0,
+      "required_free_memory_reserve_bytes": 5116398796
+    },
+    "full_parse_train": {
+      "classification": "better suited to free Colab",
+      "conservative_working_memory_bytes": 502554208,
+      "estimated_dataframe_bytes": 251277104,
+      "local_headroom_after_required_reserve_bytes": 0,
+      "required_free_memory_reserve_bytes": 5116398796
+    },
+    "modelling_or_feature_engineering": {
+      "classification": "not currently justified",
+      "reason": "Outside Phase 0C Step 1 and unsupported by bounded preflight evidence."
+    }
+  },
+  "memory_safety": {
+    "available_physical_memory_bytes_at_check": 4318412800,
+    "required_free_memory_reserve_bytes": 5116398796,
+    "rule": "Keep at least 4 GiB and 30% of physical RAM free; use the larger reserve.",
+    "total_physical_memory_bytes": 17054662656
+  },
+  "report_kind": "phase0c_step1_bounded_data_preflight",
+  "schema_version": 1
+}

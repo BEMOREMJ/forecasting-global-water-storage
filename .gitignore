@@ -1,0 +1,70 @@
+# Competition data is local-only and must never be committed.
+data/raw/**
+# Processed competition data is derived/local-only and must never be committed.
+data/processed/**
+
+# Model outputs and generated artifacts
+models/**
+artifacts/**
+tmp/**
+submissions/**/*.csv
+submissions/**/*.parquet
+**/predictions*.csv
+**/predictions*.parquet
+**/predictions*.npy
+**/predictions*.npz
+
+# Credentials and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*credentials*.json
+*service-account*.json
+*service_account*.json
+*token*.json
+secrets/**
+
+# Python environments, caches, and build output
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.pyd
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.hypothesis/
+.tox/
+.nox/
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Notebook checkpoints
+.ipynb_checkpoints/
+
+# Coverage, profiling, and memory profiling
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+*.prof
+*.lprof
+*.mem
+memory_profile*.dat
+
+# Editors and operating systems
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+Desktop.ini
+

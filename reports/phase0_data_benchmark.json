@@ -1,0 +1,1063 @@
+{
+  "benchmark": {
+    "class_A": {
+      "duckdb_memory_limit": "384MB",
+      "required_headroom_bytes": 536870912,
+      "rss_cap_bytes": 536870912,
+      "threads": 2
+    },
+    "class_B": {
+      "duckdb_memory_limit": "512MB",
+      "required_headroom_bytes": 805306368,
+      "rss_cap_bytes": 805306368,
+      "threads": 2
+    },
+    "class_C_formula": "headroom >= max(1 GiB, 2 * Step 1 dataframe estimate); cap=min(1 GiB, headroom)",
+    "class_D_formula": "headroom >= max(1.5 GiB, 3 * Step 1 dataframe estimate); cap=min(1.5 GiB, headroom)",
+    "reserve_formula": "max(4 GiB, 30% of physical RAM)",
+    "spill_directory": "tmp/benchmark_spill"
+  },
+  "datasets": {
+    "sample_submission": {
+      "aggregation": {
+        "child_peak_rss_bytes": 125607936,
+        "csv_seconds": 0.41513579999991634,
+        "equal_within_tolerance": true,
+        "gate": {
+          "authorized": true,
+          "available_bytes": 7478808576,
+          "headroom_after_reserve_bytes": 2362409780,
+          "headroom_threshold_met": true,
+          "required_headroom_bytes": 805306368,
+          "required_reserve_bytes": 5116398796,
+          "rss_cap_bytes": 805306368,
+          "stage_class": "B",
+          "total_physical_bytes": 17054662656
+        },
+        "monitored_peak_rss_bytes": 125607936,
+        "numeric_tolerance": 1e-10,
+        "parquet_seconds": 0.005090999999993073,
+        "post_stage_above_reserve": true,
+        "post_stage_available_bytes": 7470444544,
+        "wall_seconds": 0.45415369999977884
+      },
+      "convert": {
+        "child_peak_rss_bytes": 149098496,
+        "compression": "Zstandard; deterministic row group size 122880",
+        "gate": {
+          "authorized": true,
+          "available_bytes": 7488086016,
+          "headroom_after_reserve_bytes": 2371687220,
+          "headroom_threshold_met": true,
+          "required_headroom_bytes": 805306368,
+          "required_reserve_bytes": 5116398796,
+          "rss_cap_bytes": 805306368,
+          "stage_class": "B",
+          "total_physical_bytes": 17054662656
+        },
+        "monitored_peak_rss_bytes": 149098496,
+        "parquet_bytes": 273900,
+        "post_stage_above_reserve": true,
+        "post_stage_available_bytes": 7496880128,
+        "wall_seconds": 0.5810068000000683
+      },
+      "csv_bytes": 6105524,
+      "csv_to_parquet_load_time_ratio": 0.959929304413884,
+      "csv_to_parquet_size_ratio": 22.29106973347937,
+      "integrity_comparison": {
+        "column_count": true,
+        "columns": true,
+        "duplicate_id_count": true,
+        "id_all_non_null": true,
+        "id_sequence_digest": true,
+        "nan_counts": true,
+        "null_counts": true,
+        "row_count": true,
+        "unique_id_count": true
+      },
+      "integrity_csv": {
+        "child_peak_rss_bytes": 145506304,
+        "column_count": 2,
+        "columns": [
+          "ID",
+          "Target"
+        ],
+        "dtype_decisions": {
+          "ID": {
+            "assessment": "lossless logical retention",
+            "inferred": "VARCHAR",
+            "recommended": "String"
+          },
+          "Target": {
+            "assessment": "lossless logical retention",
+            "inferred": "BIGINT",
+            "recommended": "BIGINT"
+          }
+        },
+        "duplicate_id_count": 0,
+        "gate": {
+          "authorized": true,
+          "available_bytes": 7476318208,
+          "headroom_after_reserve_bytes": 2359919412,
+          "headroom_threshold_met": true,
+          "required_headroom_bytes": 536870912,
+          "required_reserve_bytes": 5116398796,
+          "rss_cap_bytes": 536870912,
+          "stage_class": "A",
+          "total_physical_bytes": 17054662656
+        },
+        "header_expected": true,
+        "id_all_non_null": true,
+        "id_sequence_digest": "87bacec7ec9b3e30a57db0288b884f0b1b0026a2ee25501b17f0c2c2c899d511",
+        "monitored_peak_rss_bytes": 145506304,
+        "nan_counts": {},
+        "null_counts": {
+          "ID": 0,
+          "Target": 0
+        },
+        "post_stage_above_reserve": true,
+        "post_stage_available_bytes": 7488016384,
+        "row_count": 280961,
+        "schema": {
+          "ID": "VARCHAR",
+          "Target": "BIGINT"
+        },
+        "unique_id_count": 280961,
+        "wall_seconds": 1.7486882000000605
+      },
+      "integrity_parquet": {
+        "child_peak_rss_bytes": 139051008,
+        "column_count": 2,
+        "columns": [
+          "ID",
+          "Target"
+        ],
+        "duplicate_id_count": 0,
+        "gate": {
+          "authorized": true,
+          "available_bytes": 7497605120,
+          "headroom_after_reserve_bytes": 2381206324,
+          "headroom_threshold_met": true,
+          "required_headroom_bytes": 805306368,
+          "required_reserve_bytes": 5116398796,
+          "rss_cap_bytes": 805306368,
+          "stage_class": "B",
+          "total_physical_bytes": 17054662656
+        },
+        "id_all_non_null": true,
+        "id_sequence_digest": "87bacec7ec9b3e30a57db0288b884f0b1b0026a2ee25501b17f0c2c2c899d511",
+        "monitored_peak_rss_bytes": 139051008,
+        "nan_counts": {},
+        "null_counts": {
+          "ID": 0,
+          "Target": 0
+        },
+        "post_stage_above_reserve": true,
+        "post_stage_available_bytes": 7479828480,
+        "row_count": 280961,
+        "schema": {
+          "ID": "VARCHAR",
+          "Target": "BIGINT"
+        },
+        "unique_id_count": 280961,
+        "wall_seconds": 0.8912844000001314
+      },
+      "pandas_load": {
+        "child_peak_rss_bytes": 158031872,
+        "column_count": 2,
+        "dataframe_memory_bytes": 9758139,
+        "gate": {
+          "authorized": true,
+          "available_bytes": 7454474240,
+          "headroom_after_reserve_bytes": 2338075444,
+          "headroom_threshold_met": true,
+          "required_headroom_bytes": 1610612736,
+          "required_reserve_bytes": 5116398796,
+          "rss_cap_bytes": 1610612736,
+          "stage_class": "D",
+          "total_physical_bytes": 17054662656
+        },
+        "monitored_peak_rss_bytes": 158031872,
+        "post_stage_above_reserve": true,
+        "post_stage_available_bytes": 7463407616,
+        "row_count": 280961,
+        "wall_seconds": 0.37477750000016385
+      },
+      "pandas_to_polars_memory_ratio": 1.299297539824873,
+      "parquet_load": {
+        "child_peak_rss_bytes": 131256320,
+        "column_count": 2,
+        "dataframe_memory_bytes": 7510319,
+        "gate": {
+          "authorized": true,
+          "available_bytes": 7480688640,
+          "headroom_after_reserve_bytes": 2364289844,
+          "headroom_threshold_met": true,
+          "required_headroom_bytes": 1073741824,
+          "required_reserve_bytes": 5116398796,
+          "rss_cap_bytes": 1073741824,
+          "stage_class": "C",
+          "total_physical_bytes": 17054662656
+        },
+        "monitored_peak_rss_bytes": 131256320,
+        "post_stage_above_reserve": true,
+        "post_stage_available_bytes": 7454404608,
+        "row_count": 280961,
+        "wall_seconds": 0.023650699999961944
+      },
+      "physical_line_matches_parsed_rows": true,
+      "physical_newline_characters": 280962,
+      "polars_load": {
+        "child_peak_rss_bytes": 131416064,
+        "column_count": 2,
+        "dataframe_memory_bytes": 7510319,
+        "gate": {
+          "authorized": true,
+          "available_bytes": 7469387776,
+          "headroom_after_reserve_bytes": 2352988980,
+          "headroom_threshold_met": true,
+          "required_headroom_bytes": 1073741824,
+          "required_reserve_bytes": 5116398796,
+          "rss_cap_bytes": 1073741824,
+          "stage_class": "C",
+          "total_physical_bytes": 17054662656
+        },
+        "monitored_peak_rss_bytes": 131416064,
+        "post_stage_above_reserve": true,
+        "post_stage_available_bytes": 7480528896,
+        "row_count": 280961,
+        "wall_seconds": 0.022702999999864915
+      },
+      "provisional_data_row_estimate": 280961,
+      "stages": {
+        "aggregation": {
+          "status": "completed"
+        },
+        "convert": {
+          "status": "completed"
+        },
+        "integrity_csv": {
+          "status": "completed"
+        },
+        "integrity_parquet": {
+          "status": "completed"
+        },
+        "pandas_load": {
+          "status": "completed"
+        },
+        "parquet_load": {
+          "status": "completed"
+        },
+        "polars_load": {
+          "status": "completed"
+        }
+      }
+    },
+    "test": {
+      "aggregation": {
+        "child_peak_rss_bytes": 153042944,
+        "csv_seconds": 2.162504399999989,
+        "equal_within_tolerance": true,
+        "gate": {
+          "authorized": true,
+          "available_bytes": 7480229888,
+          "headroom_after_reserve_bytes": 2363831092,
+          "headroom_threshold_met": true,
+          "required_headroom_bytes": 805306368,
+          "required_reserve_bytes": 5116398796,
+          "rss_cap_bytes": 805306368,
+          "stage_class": "B",
+          "total_physical_bytes": 17054662656
+        },
+        "monitored_peak_rss_bytes": 153042944,
+        "numeric_tolerance": 1e-10,
+        "parquet_seconds": 0.0035890999999992346,
+        "post_stage_above_reserve": true,
+        "post_stage_available_bytes": 7481217024,
+        "wall_seconds": 2.195526700000073
+      },
+      "convert": {
+        "child_peak_rss_bytes": 185614336,
+        "compression": "Zstandard; deterministic row group size 122880",
+        "gate": {
+          "authorized": true,
+          "available_bytes": 7476912128,
+          "headroom_after_reserve_bytes": 2360513332,
+          "headroom_threshold_met": true,
+          "required_headroom_bytes": 805306368,
+          "required_reserve_bytes": 5116398796,
+          "rss_cap_bytes": 805306368,
+          "stage_class": "B",
+          "total_physical_bytes": 17054662656
+        },
+        "monitored_peak_rss_bytes": 185614336,
+        "parquet_bytes": 11721748,
+        "post_stage_above_reserve": true,
+        "post_stage_available_bytes": 7472603136,
+        "wall_seconds": 2.8202892999997857
+      },
+      "csv_bytes": 34365988,
+      "csv_to_parquet_load_time_ratio": 4.618308787618521,
+      "csv_to_parquet_size_ratio": 2.9318142652443986,
+      "integrity_comparison": {
+        "column_count": true,
+        "columns": true,
+        "duplicate_id_count": true,
+        "id_all_non_null": true,
+        "id_sequence_digest": true,
+        "nan_counts": true,
+        "null_counts": true,
+        "row_count": true,
+        "unique_id_count": true
+      },
+      "integrity_csv": {
+        "child_peak_rss_bytes": 176033792,
+        "column_count": 13,
+        "columns": [
+          "ID",
+          "time",
+          "lat",
+          "lon",
+          "TWS_t",
+          "SPEI_01_t",
+          "SPEI_03_t",
+          "SPEI_06_t",
+          "SPEI_12_t",
+          "SOIL_MOISTURE_t",
+          "month_sin",
+          "month_cos",
+          "TWS_t_masked"
+        ],
+        "dtype_decisions": {
+          "ID": {
+            "assessment": "lossless logical retention",
+            "inferred": "VARCHAR",
+            "recommended": "String"
+          },
+          "SOIL_MOISTURE_t": {
+            "assessment": "retained; no precision-changing downcast",
+            "inferred": "DOUBLE",
+            "recommended": "Float64"
+          },
+          "SPEI_01_t": {
+            "assessment": "retained; no precision-changing downcast",
+            "inferred": "DOUBLE",
+            "recommended": "Float64"
+          },
+          "SPEI_03_t": {
+            "assessment": "retained; no precision-changing downcast",
+            "inferred": "DOUBLE",
+            "recommended": "Float64"
+          },
+          "SPEI_06_t": {
+            "assessment": "retained; no precision-changing downcast",
+            "inferred": "DOUBLE",
+            "recommended": "Float64"
+          },
+          "SPEI_12_t": {
+            "assessment": "retained; no precision-changing downcast",
+            "inferred": "DOUBLE",
+            "recommended": "Float64"
+          },
+          "TWS_t": {
+            "assessment": "retained; no precision-changing downcast",
+            "inferred": "DOUBLE",
+            "recommended": "Float64"
+          },
+          "TWS_t_masked": {
+            "assessment": "lossless logical retention",
+            "inferred": "BOOLEAN",
+            "recommended": "BOOLEAN"
+          },
+          "lat": {
+            "assessment": "retained; no precision-changing downcast",
+            "inferred": "DOUBLE",
+            "recommended": "Float64"
+          },
+          "lon": {
+            "assessment": "retained; no precision-changing downcast",
+            "inferred": "DOUBLE",
+            "recommended": "Float64"
+          },
+          "month_cos": {
+            "assessment": "retained; no precision-changing downcast",
+            "inferred": "DOUBLE",
+            "recommended": "Float64"
+          },
+          "month_sin": {
+            "assessment": "retained; no precision-changing downcast",
+            "inferred": "DOUBLE",
+            "recommended": "Float64"
+          },
+          "time": {
+            "assessment": "lossless logical retention",
+            "inferred": "DATE",
+            "recommended": "DATE"
+          }
+        },
+        "duplicate_id_count": 0,
+        "gate": {
+          "authorized": true,
+          "available_bytes": 7466033152,
+          "headroom_after_reserve_bytes": 2349634356,
+          "headroom_threshold_met": true,
+          "required_headroom_bytes": 536870912,
+          "required_reserve_bytes": 5116398796,
+          "rss_cap_bytes": 536870912,
+          "stage_class": "A",
+          "total_physical_bytes": 17054662656
+        },
+        "header_expected": true,
+        "id_all_non_null": true,
+        "id_sequence_digest": "87bacec7ec9b3e30a57db0288b884f0b1b0026a2ee25501b17f0c2c2c899d511",
+        "monitored_peak_rss_bytes": 176033792,
+        "nan_counts": {
+          "SOIL_MOISTURE_t": 0,
+          "SPEI_01_t": 0,
+          "SPEI_03_t": 0,
+          "SPEI_06_t": 0,
+          "SPEI_12_t": 0,
+          "TWS_t": 0,
+          "lat": 0,
+          "lon": 0,
+          "month_cos": 0,
+          "month_sin": 0
+        },
+        "null_counts": {
+          "ID": 0,
+          "SOIL_MOISTURE_t": 0,
+          "SPEI_01_t": 0,
+          "SPEI_03_t": 0,
+          "SPEI_06_t": 0,
+          "SPEI_12_t": 0,
+          "TWS_t": 186913,
+          "TWS_t_masked": 0,
+          "lat": 0,
+          "lon": 0,
+          "month_cos": 0,
+          "month_sin": 0,
+          "time": 0
+        },
+        "post_stage_above_reserve": true,
+        "post_stage_available_bytes": 7476842496,
+        "row_count": 280961,
+        "schema": {
+          "ID": "VARCHAR",
+          "SOIL_MOISTURE_t": "DOUBLE",
+          "SPEI_01_t": "DOUBLE",
+          "SPEI_03_t": "DOUBLE",
+          "SPEI_06_t": "DOUBLE",
+          "SPEI_12_t": "DOUBLE",
+          "TWS_t": "DOUBLE",
+          "TWS_t_masked": "BOOLEAN",
+          "lat": "DOUBLE",
+          "lon": "DOUBLE",
+          "month_cos": "DOUBLE",
+          "month_sin": "DOUBLE",
+          "time": "DATE"
+        },
+        "unique_id_count": 280961,
+        "wall_seconds": 7.532468599999902
+      },
+      "integrity_parquet": {
+        "child_peak_rss_bytes": 154759168,
+        "column_count": 13,
+        "columns": [
+          "ID",
+          "time",
+          "lat",
+          "lon",
+          "TWS_t",
+          "SPEI_01_t",
+          "SPEI_03_t",
+          "SPEI_06_t",
+          "SPEI_12_t",
+          "SOIL_MOISTURE_t",
+          "month_sin",
+          "month_cos",
+          "TWS_t_masked"
+        ],
+        "duplicate_id_count": 0,
+        "gate": {
+          "authorized": true,
+          "available_bytes": 7472418816,
+          "headroom_after_reserve_bytes": 2356020020,
+          "headroom_threshold_met": true,
+          "required_headroom_bytes": 805306368,
+          "required_reserve_bytes": 5116398796,
+          "rss_cap_bytes": 805306368,
+          "stage_class": "B",
+          "total_physical_bytes": 17054662656
+        },
+        "id_all_non_null": true,
+        "id_sequence_digest": "87bacec7ec9b3e30a57db0288b884f0b1b0026a2ee25501b17f0c2c2c899d511",
+        "monitored_peak_rss_bytes": 154759168,
+        "nan_counts": {
+          "SOIL_MOISTURE_t": 0,
+          "SPEI_01_t": 0,
+          "SPEI_03_t": 0,
+          "SPEI_06_t": 0,
+          "SPEI_12_t": 0,
+          "TWS_t": 0,
+          "lat": 0,
+          "lon": 0,
+          "month_cos": 0,
+          "month_sin": 0
+        },
+        "null_counts": {
+          "ID": 0,
+          "SOIL_MOISTURE_t": 0,
+          "SPEI_01_t": 0,
+          "SPEI_03_t": 0,
+          "SPEI_06_t": 0,
+          "SPEI_12_t": 0,
+          "TWS_t": 186913,
+          "TWS_t_masked": 0,
+          "lat": 0,
+          "lon": 0,
+          "month_cos": 0,
+          "month_sin": 0,
+          "time": 0
+        },
+        "post_stage_above_reserve": true,
+        "post_stage_available_bytes": 7480160256,
+        "row_count": 280961,
+        "schema": {
+          "ID": "VARCHAR",
+          "SOIL_MOISTURE_t": "DOUBLE",
+          "SPEI_01_t": "DOUBLE",
+          "SPEI_03_t": "DOUBLE",
+          "SPEI_06_t": "DOUBLE",
+          "SPEI_12_t": "DOUBLE",
+          "TWS_t": "DOUBLE",
+          "TWS_t_masked": "BOOLEAN",
+          "lat": "DOUBLE",
+          "lon": "DOUBLE",
+          "month_cos": "DOUBLE",
+          "month_sin": "DOUBLE",
+          "time": "DATE"
+        },
+        "unique_id_count": 280961,
+        "wall_seconds": 0.6528863000000911
+      },
+      "pandas_load": {
+        "child_peak_rss_bytes": 178876416,
+        "column_count": 13,
+        "dataframe_memory_bytes": 35325590,
+        "gate": {
+          "authorized": true,
+          "available_bytes": 7479631872,
+          "headroom_after_reserve_bytes": 2363233076,
+          "headroom_threshold_met": true,
+          "required_headroom_bytes": 1610612736,
+          "required_reserve_bytes": 5116398796,
+          "rss_cap_bytes": 1610612736,
+          "stage_class": "D",
+          "total_physical_bytes": 17054662656
+        },
+        "monitored_peak_rss_bytes": 178876416,
+        "post_stage_above_reserve": true,
+        "post_stage_available_bytes": 7476248576,
+        "row_count": 280961,
+        "wall_seconds": 1.0958345999999892
+      },
+      "pandas_to_polars_memory_ratio": 1.2213310083313262,
+      "parquet_load": {
+        "child_peak_rss_bytes": 164339712,
+        "column_count": 13,
+        "dataframe_memory_bytes": 28933599,
+        "gate": {
+          "authorized": true,
+          "available_bytes": 7484964864,
+          "headroom_after_reserve_bytes": 2368566068,
+          "headroom_threshold_met": true,
+          "required_headroom_bytes": 1073741824,
+          "required_reserve_bytes": 5116398796,
+          "rss_cap_bytes": 1073741824,
+          "stage_class": "C",
+          "total_physical_bytes": 17054662656
+        },
+        "monitored_peak_rss_bytes": 164339712,
+        "post_stage_above_reserve": true,
+        "post_stage_available_bytes": 7479562240,
+        "row_count": 280961,
+        "wall_seconds": 0.05507409999995616
+      },
+      "physical_line_matches_parsed_rows": true,
+      "physical_newline_characters": 280962,
+      "polars_load": {
+        "child_peak_rss_bytes": 205062144,
+        "column_count": 13,
+        "dataframe_memory_bytes": 28923846,
+        "gate": {
+          "authorized": true,
+          "available_bytes": 7481286656,
+          "headroom_after_reserve_bytes": 2364887860,
+          "headroom_threshold_met": true,
+          "required_headroom_bytes": 1073741824,
+          "required_reserve_bytes": 5116398796,
+          "rss_cap_bytes": 1073741824,
+          "stage_class": "C",
+          "total_physical_bytes": 17054662656
+        },
+        "monitored_peak_rss_bytes": 205062144,
+        "post_stage_above_reserve": true,
+        "post_stage_available_bytes": 7484964864,
+        "row_count": 280961,
+        "wall_seconds": 0.25434919999997874
+      },
+      "provisional_data_row_estimate": 280961,
+      "stages": {
+        "aggregation": {
+          "status": "completed"
+        },
+        "convert": {
+          "status": "completed"
+        },
+        "integrity_csv": {
+          "status": "completed"
+        },
+        "integrity_parquet": {
+          "status": "completed"
+        },
+        "pandas_load": {
+          "status": "completed"
+        },
+        "parquet_load": {
+          "status": "completed"
+        },
+        "polars_load": {
+          "status": "completed"
+        }
+      }
+    },
+    "train": {
+      "aggregation": {
+        "child_peak_rss_bytes": 408023040,
+        "csv_seconds": 17.260577199999943,
+        "equal_within_tolerance": true,
+        "gate": {
+          "authorized": true,
+          "available_bytes": 7488446464,
+          "headroom_after_reserve_bytes": 2372047668,
+          "headroom_threshold_met": true,
+          "required_headroom_bytes": 805306368,
+          "required_reserve_bytes": 5116398796,
+          "rss_cap_bytes": 805306368,
+          "stage_class": "B",
+          "total_physical_bytes": 17054662656
+        },
+        "monitored_peak_rss_bytes": 408023040,
+        "numeric_tolerance": 1e-10,
+        "parquet_seconds": 0.010313400000086403,
+        "post_stage_above_reserve": true,
+        "post_stage_available_bytes": 7515136000,
+        "wall_seconds": 17.304918000000043
+      },
+      "convert": {
+        "child_peak_rss_bytes": 461250560,
+        "compression": "Zstandard; deterministic row group size 122880",
+        "gate": {
+          "authorized": true,
+          "available_bytes": 7502761984,
+          "headroom_after_reserve_bytes": 2386363188,
+          "headroom_threshold_met": true,
+          "required_headroom_bytes": 805306368,
+          "required_reserve_bytes": 5116398796,
+          "rss_cap_bytes": 805306368,
+          "stage_class": "B",
+          "total_physical_bytes": 17054662656
+        },
+        "monitored_peak_rss_bytes": 461250560,
+        "parquet_bytes": 116573052,
+        "post_stage_above_reserve": true,
+        "post_stage_available_bytes": 7453655040,
+        "wall_seconds": 21.400532699999985
+      },
+      "csv_bytes": 289126551,
+      "csv_to_parquet_load_time_ratio": 5.376752318086741,
+      "csv_to_parquet_size_ratio": 2.4802177350559544,
+      "integrity_comparison": {
+        "column_count": true,
+        "columns": true,
+        "duplicate_id_count": true,
+        "id_all_non_null": true,
+        "id_sequence_digest": true,
+        "nan_counts": true,
+        "null_counts": true,
+        "row_count": true,
+        "unique_id_count": true
+      },
+      "integrity_csv": {
+        "child_peak_rss_bytes": 430710784,
+        "column_count": 13,
+        "columns": [
+          "sample_id",
+          "time",
+          "lat",
+          "lon",
+          "TWS_t",
+          "SPEI_01_t",
+          "SPEI_03_t",
+          "SPEI_06_t",
+          "SPEI_12_t",
+          "SOIL_MOISTURE_t",
+          "month_sin",
+          "month_cos",
+          "target"
+        ],
+        "dtype_decisions": {
+          "SOIL_MOISTURE_t": {
+            "assessment": "retained; no precision-changing downcast",
+            "inferred": "DOUBLE",
+            "recommended": "Float64"
+          },
+          "SPEI_01_t": {
+            "assessment": "retained; no precision-changing downcast",
+            "inferred": "DOUBLE",
+            "recommended": "Float64"
+          },
+          "SPEI_03_t": {
+            "assessment": "retained; no precision-changing downcast",
+            "inferred": "DOUBLE",
+            "recommended": "Float64"
+          },
+          "SPEI_06_t": {
+            "assessment": "retained; no precision-changing downcast",
+            "inferred": "DOUBLE",
+            "recommended": "Float64"
+          },
+          "SPEI_12_t": {
+            "assessment": "retained; no precision-changing downcast",
+            "inferred": "DOUBLE",
+            "recommended": "Float64"
+          },
+          "TWS_t": {
+            "assessment": "retained; no precision-changing downcast",
+            "inferred": "DOUBLE",
+            "recommended": "Float64"
+          },
+          "lat": {
+            "assessment": "retained; no precision-changing downcast",
+            "inferred": "DOUBLE",
+            "recommended": "Float64"
+          },
+          "lon": {
+            "assessment": "retained; no precision-changing downcast",
+            "inferred": "DOUBLE",
+            "recommended": "Float64"
+          },
+          "month_cos": {
+            "assessment": "retained; no precision-changing downcast",
+            "inferred": "DOUBLE",
+            "recommended": "Float64"
+          },
+          "month_sin": {
+            "assessment": "retained; no precision-changing downcast",
+            "inferred": "DOUBLE",
+            "recommended": "Float64"
+          },
+          "sample_id": {
+            "assessment": "lossless logical retention",
+            "inferred": "VARCHAR",
+            "recommended": "String"
+          },
+          "target": {
+            "assessment": "retained; no precision-changing downcast",
+            "inferred": "DOUBLE",
+            "recommended": "Float64"
+          },
+          "time": {
+            "assessment": "lossless logical retention",
+            "inferred": "DATE",
+            "recommended": "DATE"
+          }
+        },
+        "duplicate_id_count": 0,
+        "gate": {
+          "authorized": true,
+          "available_bytes": 7285366784,
+          "headroom_after_reserve_bytes": 2168967988,
+          "headroom_threshold_met": true,
+          "required_headroom_bytes": 536870912,
+          "required_reserve_bytes": 5116398796,
+          "rss_cap_bytes": 536870912,
+          "stage_class": "A",
+          "total_physical_bytes": 17054662656
+        },
+        "header_expected": true,
+        "id_all_non_null": true,
+        "id_sequence_digest": "0c01d75d7dca98836608bd4e08c057038ccd79d6331b11ed35c4f388ddd1169a",
+        "monitored_peak_rss_bytes": 430710784,
+        "nan_counts": {
+          "SOIL_MOISTURE_t": 0,
+          "SPEI_01_t": 0,
+          "SPEI_03_t": 0,
+          "SPEI_06_t": 0,
+          "SPEI_12_t": 0,
+          "TWS_t": 0,
+          "lat": 0,
+          "lon": 0,
+          "month_cos": 0,
+          "month_sin": 0,
+          "target": 0
+        },
+        "null_counts": {
+          "SOIL_MOISTURE_t": 0,
+          "SPEI_01_t": 0,
+          "SPEI_03_t": 0,
+          "SPEI_06_t": 0,
+          "SPEI_12_t": 0,
+          "TWS_t": 0,
+          "lat": 0,
+          "lon": 0,
+          "month_cos": 0,
+          "month_sin": 0,
+          "sample_id": 0,
+          "target": 0,
+          "time": 0
+        },
+        "post_stage_above_reserve": true,
+        "post_stage_available_bytes": 7502737408,
+        "row_count": 2154021,
+        "schema": {
+          "SOIL_MOISTURE_t": "DOUBLE",
+          "SPEI_01_t": "DOUBLE",
+          "SPEI_03_t": "DOUBLE",
+          "SPEI_06_t": "DOUBLE",
+          "SPEI_12_t": "DOUBLE",
+          "TWS_t": "DOUBLE",
+          "lat": "DOUBLE",
+          "lon": "DOUBLE",
+          "month_cos": "DOUBLE",
+          "month_sin": "DOUBLE",
+          "sample_id": "VARCHAR",
+          "target": "DOUBLE",
+          "time": "DATE"
+        },
+        "unique_id_count": 2154021,
+        "wall_seconds": 58.537249900000006
+      },
+      "integrity_parquet": {
+        "child_peak_rss_bytes": 278249472,
+        "column_count": 13,
+        "columns": [
+          "sample_id",
+          "time",
+          "lat",
+          "lon",
+          "TWS_t",
+          "SPEI_01_t",
+          "SPEI_03_t",
+          "SPEI_06_t",
+          "SPEI_12_t",
+          "SOIL_MOISTURE_t",
+          "month_sin",
+          "month_cos",
+          "target"
+        ],
+        "duplicate_id_count": 0,
+        "gate": {
+          "authorized": true,
+          "available_bytes": 7454773248,
+          "headroom_after_reserve_bytes": 2338374452,
+          "headroom_threshold_met": true,
+          "required_headroom_bytes": 805306368,
+          "required_reserve_bytes": 5116398796,
+          "rss_cap_bytes": 805306368,
+          "stage_class": "B",
+          "total_physical_bytes": 17054662656
+        },
+        "id_all_non_null": true,
+        "id_sequence_digest": "0c01d75d7dca98836608bd4e08c057038ccd79d6331b11ed35c4f388ddd1169a",
+        "monitored_peak_rss_bytes": 278249472,
+        "nan_counts": {
+          "SOIL_MOISTURE_t": 0,
+          "SPEI_01_t": 0,
+          "SPEI_03_t": 0,
+          "SPEI_06_t": 0,
+          "SPEI_12_t": 0,
+          "TWS_t": 0,
+          "lat": 0,
+          "lon": 0,
+          "month_cos": 0,
+          "month_sin": 0,
+          "target": 0
+        },
+        "null_counts": {
+          "SOIL_MOISTURE_t": 0,
+          "SPEI_01_t": 0,
+          "SPEI_03_t": 0,
+          "SPEI_06_t": 0,
+          "SPEI_12_t": 0,
+          "TWS_t": 0,
+          "lat": 0,
+          "lon": 0,
+          "month_cos": 0,
+          "month_sin": 0,
+          "sample_id": 0,
+          "target": 0,
+          "time": 0
+        },
+        "post_stage_above_reserve": true,
+        "post_stage_available_bytes": 7488376832,
+        "row_count": 2154021,
+        "schema": {
+          "SOIL_MOISTURE_t": "DOUBLE",
+          "SPEI_01_t": "DOUBLE",
+          "SPEI_03_t": "DOUBLE",
+          "SPEI_06_t": "DOUBLE",
+          "SPEI_12_t": "DOUBLE",
+          "TWS_t": "DOUBLE",
+          "lat": "DOUBLE",
+          "lon": "DOUBLE",
+          "month_cos": "DOUBLE",
+          "month_sin": "DOUBLE",
+          "sample_id": "VARCHAR",
+          "target": "DOUBLE",
+          "time": "DATE"
+        },
+        "unique_id_count": 2154021,
+        "wall_seconds": 4.560079599999881
+      },
+      "pandas_load": {
+        "child_peak_rss_bytes": 628756480,
+        "column_count": 13,
+        "dataframe_memory_bytes": 285904602,
+        "gate": {
+          "authorized": true,
+          "available_bytes": 7504756736,
+          "headroom_after_reserve_bytes": 2388357940,
+          "headroom_threshold_met": true,
+          "required_headroom_bytes": 1610612736,
+          "required_reserve_bytes": 5116398796,
+          "rss_cap_bytes": 1610612736,
+          "stage_class": "D",
+          "total_physical_bytes": 17054662656
+        },
+        "monitored_peak_rss_bytes": 628756480,
+        "post_stage_above_reserve": true,
+        "post_stage_available_bytes": 7466110976,
+        "row_count": 2154021,
+        "wall_seconds": 7.678764400000091
+      },
+      "pandas_to_polars_memory_ratio": 1.198680979098057,
+      "parquet_load": {
+        "child_peak_rss_bytes": 521539584,
+        "column_count": 13,
+        "dataframe_memory_bytes": 238516008,
+        "gate": {
+          "authorized": true,
+          "available_bytes": 7504224256,
+          "headroom_after_reserve_bytes": 2387825460,
+          "headroom_threshold_met": true,
+          "required_headroom_bytes": 1073741824,
+          "required_reserve_bytes": 5116398796,
+          "rss_cap_bytes": 1073741824,
+          "stage_class": "C",
+          "total_physical_bytes": 17054662656
+        },
+        "monitored_peak_rss_bytes": 521539584,
+        "post_stage_above_reserve": true,
+        "post_stage_available_bytes": 7504723968,
+        "row_count": 2154021,
+        "wall_seconds": 0.34992220000003726
+      },
+      "physical_line_matches_parsed_rows": true,
+      "physical_newline_characters": 2154022,
+      "polars_load": {
+        "child_peak_rss_bytes": 696774656,
+        "column_count": 13,
+        "dataframe_memory_bytes": 238516008,
+        "gate": {
+          "authorized": true,
+          "available_bytes": 7515336704,
+          "headroom_after_reserve_bytes": 2398937908,
+          "headroom_threshold_met": true,
+          "required_headroom_bytes": 1073741824,
+          "required_reserve_bytes": 5116398796,
+          "rss_cap_bytes": 1073741824,
+          "stage_class": "C",
+          "total_physical_bytes": 17054662656
+        },
+        "monitored_peak_rss_bytes": 696774656,
+        "post_stage_above_reserve": true,
+        "post_stage_available_bytes": 7504138240,
+        "row_count": 2154021,
+        "wall_seconds": 1.8814450000002125
+      },
+      "provisional_data_row_estimate": 2154021,
+      "stages": {
+        "aggregation": {
+          "status": "completed"
+        },
+        "convert": {
+          "status": "completed"
+        },
+        "integrity_csv": {
+          "status": "completed"
+        },
+        "integrity_parquet": {
+          "status": "completed"
+        },
+        "pandas_load": {
+          "status": "completed"
+        },
+        "parquet_load": {
+          "status": "completed"
+        },
+        "polars_load": {
+          "status": "completed"
+        }
+      }
+    }
+  },
+  "memory_gate": {
+    "authorized": true,
+    "available_bytes": 7284215808,
+    "headroom_after_reserve_bytes": 2167817012,
+    "headroom_threshold_met": true,
+    "required_headroom_bytes": 536870912,
+    "required_reserve_bytes": 5116398796,
+    "rss_cap_bytes": 536870912,
+    "stage_class": "A",
+    "total_physical_bytes": 17054662656
+  },
+  "protected_artifacts": {
+    "sample_submission": {
+      "byte_size": 6105524,
+      "path": "data/raw/SampleSubmission.csv",
+      "sha256": "77881bc7257791d583c5a1f496a5639864d490a0237515338fc5305ec943db22"
+    },
+    "starter_notebook": {
+      "byte_size": 1236676,
+      "path": "references/official/StarterNotebook.ipynb",
+      "sha256": "a9adf72aa1b75c41c72357f1e5bbe2e1b2c90d787d0c9c9fbce7a46bfb3874b4"
+    },
+    "test": {
+      "byte_size": 34365988,
+      "path": "data/raw/Test.csv",
+      "sha256": "314da7996fa947b30797d82ea8d0ea34240fe52683ecf102a21c37f00f61c196"
+    },
+    "train": {
+      "byte_size": 289126551,
+      "path": "data/raw/Train.csv",
+      "sha256": "97ff1912b35871574a01900c24a792a9a418653e87f01dccc1788c6838d94b1f"
+    },
+    "trustworthiness_pdf": {
+      "byte_size": 94458,
+      "path": "references/official/Trustworthiness_Evaluation.pdf",
+      "sha256": "217d7da35de4bff29d66377f20fd80d2fc26ed9e4946060613bb4f9f4de1c792"
+    }
+  },
+  "schema_version": 1,
+  "status": "complete",
+  "test_submission_relationship": {
+    "every_test_id_exactly_once": true,
+    "same_id_sequence_digest": true,
+    "same_row_count": true,
+    "sample_submission_exact_header": true
+  },
+  "total_processed_cache_bytes": 128568700,
+  "unfinished": []
+}

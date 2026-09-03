@@ -1,0 +1,33 @@
+[project]
+name = "drought-forecasting"
+version = "0.1.0"
+description = "Reproducible forecasting workflow for the Global Water Storage Challenge."
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "duckdb",
+    "numpy",
+    "pandas",
+    "polars",
+    "psutil",
+    "pyarrow",
+    "pyyaml",
+]
+
+[dependency-groups]
+dev = [
+    "pytest",
+    "ruff",
+]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+exclude = ["references/official"]
