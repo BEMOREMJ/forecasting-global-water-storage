@@ -1,0 +1,53 @@
+schema_version: phase2d-lightgbm-v1
+seed: 20260904
+num_boost_round: 200
+features:
+  - last_observed_tws
+  - effective_horizon
+  - latitude
+  - longitude
+  - input_year
+  - input_calendar_month
+  - month_sin
+  - month_cos
+  - SPEI_01_t
+  - SPEI_03_t
+  - SPEI_06_t
+  - SPEI_12_t
+  - SOIL_MOISTURE_t
+omitted_approved_features:
+  tws_availability_or_mask_indicator: absent_from_phase2c_artifact
+preprocessing:
+  numeric_dtype: float32
+  imputation: none
+  categorical_encoding: none
+  missing_values: lightgbm_native
+  sample_weight: phase2c_population_count_divided_by_retained_count
+parameters:
+  objective: regression
+  metric: rmse
+  boosting_type: gbdt
+  learning_rate: 0.05
+  num_leaves: 31
+  max_depth: 8
+  min_data_in_leaf: 100
+  max_bin: 127
+  bagging_fraction: 0.8
+  bagging_freq: 1
+  feature_fraction: 0.9
+  seed: 20260904
+  feature_fraction_seed: 20260904
+  bagging_seed: 20260904
+  data_random_seed: 20260904
+  deterministic: true
+  force_col_wise: true
+  num_threads: 2
+  use_missing: true
+  zero_as_missing: false
+  verbosity: -1
+sources:
+  phase2c_artifact_sha256: 078ad361f03159ddd5b1f1f0a30e311d261ce82e1ab938d4e56cf56e2885e31b
+  phase2c_configuration_id: ac6e737441d115475f8062d2e53bff57b16d4d8b3786aa54f8ac9a34866dd05e
+  phase2c_retained_target_sha256: 4e1fc3745b754ae0020e111fa0d4e65afd3daf8b63034b7095340d3dc15fe95d
+  comparable_row_sha256: 2b27c3e0d376965789abab1b1f7dcf3577a8d15b374c03d0a312e39fb4607c0a
+  comparable_row_count: 551965

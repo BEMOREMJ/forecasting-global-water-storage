@@ -1,0 +1,34 @@
+schema_version: phase2g-submission-v1
+seed: 20260904
+test_origin: 2015-09-01
+training_cutoff: 2015-09-01
+horizons: [1, 2, 3, 4, 5, 6, 7]
+sampling:
+  cap: 2000000
+  algorithm: sha256-rank-within-horizon-v1
+  weights: population_count_divided_by_retained_count_within_horizon
+  retained_by_horizon: {'1': 669474, '2': 445443, '3': 332978, '4': 221212, '5': 110763, '6': 110186, '7': 109944}
+resources:
+  threads: 2
+  duckdb_memory_limit: 2GB
+  spill_directory: tmp/phase2g_duckdb
+sources:
+  train_cache: data/processed/Train.parquet
+  test_cache: data/processed/Test.parquet
+  official_test: data/raw/Test.csv
+  official_sample_submission: data/raw/SampleSubmission.csv
+  train_sha256: 97ff1912b35871574a01900c24a792a9a418653e87f01dccc1788c6838d94b1f
+  test_sha256: 314da7996fa947b30797d82ea8d0ea34240fe52683ecf102a21c37f00f61c196
+  sample_submission_sha256: 77881bc7257791d583c5a1f496a5639864d490a0237515338fc5305ec943db22
+  validation_identity: dfafe4ae008ac4180f3f92a54ca825c779ab4768b0ba870e22dd1cd4e14088c9
+  comparable_row_identity: 2b27c3e0d376965789abab1b1f7dcf3577a8d15b374c03d0a312e39fb4607c0a
+  phase2d_config: configs/phase2d_lightgbm.yaml
+  phase2d_configuration_id: 45252c89a4f4a33e15ce0a6f53d0e65989bf656de3cb46cd8d04504ef4ec70dc
+  phase2e_decision: reports/phase2e_comparison.json
+output:
+  training_artifact: artifacts/phase2g/final_fit_examples.parquet
+  model: artifacts/phase2g/final_lightgbm_model.txt
+  test_features: artifacts/phase2g/test_features.parquet
+  predictions: artifacts/phase2g/test_predictions.parquet
+  submission: submissions/phase2g_lightgbm_basic.csv
+  manifest: reports/phase2g_submission_manifest.json

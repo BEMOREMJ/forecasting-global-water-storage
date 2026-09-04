@@ -1,0 +1,42 @@
+schema_version: phase2a-contract-v1
+prediction_schema:
+  columns:
+    - run_id
+    - fold_id
+    - location_id
+    - input_month
+    - target_month
+    - effective_horizon
+    - mask_state
+    - prediction
+    - validation_actual
+    - model_name
+    - configuration_id
+    - data_manifest_id
+    - validation_id
+  prediction_key: [fold_id, location_id, input_month, target_month]
+  comparable_row_columns:
+    - fold_id
+    - location_id
+    - input_month
+    - target_month
+    - effective_horizon
+    - mask_state
+    - validation_actual
+fallback_chains:
+  global_mean: [global_mean]
+  location_mean: [location_mean, global_mean]
+  location_calendar_month_climatology: [location_calendar_month_climatology, location_mean, global_mean]
+  persistence: [persistence, location_calendar_month_climatology, location_mean, global_mean]
+  seasonal_naive: [seasonal_naive, persistence, location_calendar_month_climatology, location_mean, global_mean]
+  location_trend_seasonal: [location_trend_seasonal, seasonal_naive, persistence, location_calendar_month_climatology, location_mean, global_mean]
+identities:
+  data_manifest_sha256: 445ce8f92d21abe7e103ad77f38091a4f55e0466d31515d33fbd40c06fb8e533
+  validation_structural_audit_sha256: dfafe4ae008ac4180f3f92a54ca825c779ab4768b0ba870e22dd1cd4e14088c9
+  validation_version: validation-v1
+  expected_comparable_rows: 551965
+policies:
+  mask: mask-exact-complete-v1
+  tws_provenance: tws-observed-only-v1
+  recursion: recursion-disabled-v1
+  metric: rmse-row-pooled-v1

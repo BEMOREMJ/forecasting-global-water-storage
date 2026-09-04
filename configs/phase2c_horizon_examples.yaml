@@ -1,0 +1,32 @@
+schema_version: phase2c-horizon-examples-v1
+horizons: [1, 2, 3, 4, 5, 6, 7]
+sources:
+  train_cache:
+    path: data/processed/Train.parquet
+    sha256: 47888bf5c106f92249e3767b830177d10668d5a73b3505bd7fe276c32accb183
+  validation_identity: dfafe4ae008ac4180f3f92a54ca825c779ab4768b0ba870e22dd1cd4e14088c9
+folds:
+  F01:
+    cutoff: 2004-09-01
+    retained_by_horizon: {'1': 336960, '2': 224355, '3': 167829, '4': 111536, '5': 55844, '6': 55561, '7': 55438}
+  F02:
+    cutoff: 2008-12-01
+    retained_by_horizon: {'1': 331257, '2': 220688, '3': 165366, '4': 110242, '5': 55029, '6': 54953, '7': 54942}
+availability:
+  target: target_month <= fold_cutoff
+  current_covariates: exact input_month = target_month - 1 calendar month
+  tws: exact tws_source_month = target_month - effective_horizon calendar months
+  missing_exact_tws: exclude_example_without_backfill
+sampling:
+  mode: fixed_cap_stratified_to_validation_v1
+  cap: 2000000
+  seed: 20260904
+  algorithm: sha256-rank-within-fold-horizon-v1
+  weights: population_count_divided_by_retained_count_within_fold_horizon
+resources:
+  threads: 2
+  duckdb_memory_limit: 2GB
+  spill_directory: tmp/phase2c_duckdb
+output:
+  artifact: artifacts/phase2c/horizon_training_examples_v1.parquet
+  manifest: reports/phase2c_horizon_examples_manifest.json
