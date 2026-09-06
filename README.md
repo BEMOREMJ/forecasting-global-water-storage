@@ -86,6 +86,8 @@ Compact evidence lives in `reports/phase2b/`, `reports/phase2c_horizon_examples_
 `reports/phase2d/`, and `reports/phase2e_comparison.json`; the seven records are in
 `experiments/registry.csv`. Large OOF predictions, fitted models, and the 2,000,000-row training
 artifact remain Git-ignored under `artifacts/`. Do not rerun expensive production work merely to
+recover reporting telemetry. Phase 3 reporting is summarized in `notebooks/02_core_modeling.ipynb`
+and `reports/phase3_closeout.md`; generated Phase 3 candidates remain local and unuploaded.
 view results.
 
 ```powershell

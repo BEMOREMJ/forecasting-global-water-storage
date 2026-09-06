@@ -1,0 +1,73 @@
+schema_version: phase3m1-residual-lightgbm-v1
+experiment_id: P3-M1
+status: preregistered_not_run
+execution_limit: 1
+hypothesis: >-
+  Change from the last genuinely observed TWS is more stable across locations and
+  periods than absolute TWS, while all other Phase 2 modelling choices remain fixed.
+target:
+  training: target_minus_last_observed_tws
+  reconstruction: last_observed_tws_plus_predicted_residual
+  raw_year_retained: true
+features:
+  - last_observed_tws
+  - effective_horizon
+  - latitude
+  - longitude
+  - input_year
+  - input_calendar_month
+  - month_sin
+  - month_cos
+  - SPEI_01_t
+  - SPEI_03_t
+  - SPEI_06_t
+  - SPEI_12_t
+  - SOIL_MOISTURE_t
+sources:
+  training_artifact: artifacts/phase2c/horizon_training_examples_v1.parquet
+  training_artifact_sha256: 078ad361f03159ddd5b1f1f0a30e311d261ce82e1ab938d4e56cf56e2885e31b
+  retained_target_sha256: 4e1fc3745b754ae0020e111fa0d4e65afd3daf8b63034b7095340d3dc15fe95d
+  phase2_model_config: configs/phase2d_lightgbm.yaml
+  train_cache: data/processed/Train.parquet
+  test_cache: data/processed/Test.parquet
+identities:
+  validation: dfafe4ae008ac4180f3f92a54ca825c779ab4768b0ba870e22dd1cd4e14088c9
+  comparable_rows: 2b27c3e0d376965789abab1b1f7dcf3577a8d15b374c03d0a312e39fb4607c0a
+  data_manifest: 445ce8f92d21abe7e103ad77f38091a4f55e0466d31515d33fbd40c06fb8e533
+policies:
+  validation: validation-v1
+  mask: mask-exact-complete-v1
+  tws_provenance: tws-observed-only-v1
+  recursion: recursion-disabled-v1
+  metric: rmse-row-pooled-v1
+populations:
+  training: {F01: 1007523, F02: 992477, pooled: 2000000}
+  validation: {F01: 278059, F02: 273906, pooled: 551965}
+resources:
+  threads: 2
+  seed: 20260904
+  duckdb_memory_limit: 2GB
+  expected_runtime_minutes: [3, 7]
+  expected_peak_memory_mb: 2600
+  expected_incremental_disk_mb: 100
+  available_memory_mb_at_preregistration: 4415
+  available_disk_mb_at_preregistration: 54184
+  safety_decision: proceed
+output:
+  F01_model: artifacts/phase3m1/p3m1-F01.txt
+  F02_model: artifacts/phase3m1/p3m1-F02.txt
+  F01_predictions: artifacts/phase3m1/p3m1-F01-predictions.parquet
+  F02_predictions: artifacts/phase3m1/p3m1-F02-predictions.parquet
+  residual_oof: artifacts/phase3m1/p3m1-residual-oof.parquet
+  absolute_oof: artifacts/phase3m1/p3m1-absolute-oof.parquet
+  provenance: reports/phase3m1_provenance.json
+  metrics: reports/phase3m1_metrics.json
+promotion_gate:
+  pooled_maximum_rmse: 0.5879872454156464
+  fold_maximum_rmse: {F01: 0.5985777539596151, F02: 0.5973871814101902}
+  complete_coverage: true
+  leakage_safe: true
+  masked_horizons_improved_or_protected: true
+recent_period_scoring:
+  enabled: false
+  reason: not_preregistered_for_P3-M1

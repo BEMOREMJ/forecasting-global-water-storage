@@ -1,0 +1,22 @@
+schema_version: phase3h-production-v1
+selection: P3-M3B
+role: primary_phase3_candidate
+target: target_minus_last_observed_tws
+reconstruction: last_observed_tws_plus_predicted_residual
+features: [last_observed_tws, effective_horizon, latitude, longitude, input_calendar_month, month_sin, month_cos, SPEI_01_t, SPEI_03_t, SPEI_06_t, SPEI_12_t, SOIL_MOISTURE_t]
+model: {config: configs/phase2d_lightgbm.yaml, rounds: 200, seed: 20260904, threads: 2}
+policies: {cap: 2000000, recursion: disabled, enhanced_features: false, external_data: false, ensemble: false, public_score_optimization: false}
+sources:
+  training: artifacts/phase2g/final_fit_examples.parquet
+  training_sha256: 3c0d67de12cf4a7515c92838074a2680a708d699eeea8d3b7dd541b5e059a6c2
+  retained_identity: 9526f039a7d8a0cb5ddc46d605936a265d416d7dcb12872610136cbbd915f3e9
+  test_features: artifacts/phase2g/test_features.parquet
+  test_features_sha256: 6a86e8880bf773394444011326666fd53b082622112304d4566e4dc7b3073b08
+  sample_submission: data/raw/SampleSubmission.csv
+expected: {training_rows: 2000000, test_rows: 280961, submission_columns: [ID, Target]}
+outputs:
+  model: artifacts/phase3h/p3m3b-production.txt
+  predictions: artifacts/phase3h/p3m3b-test-predictions.parquet
+  primary_submission: submissions/phase3h_p3m3b_primary.csv
+  persistence_submission: submissions/phase3h_persistence_diagnostic.csv
+  manifest: reports/phase3h_production_manifest.json

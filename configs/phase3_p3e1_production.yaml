@@ -1,0 +1,12 @@
+schema_version: phase3-p3e1-production-v1
+status: owner_requested_diagnostic
+component_order: [persistence, phase2_raw_lightgbm, p3_m1_residual, p3_m2_enhanced_residual, p3_m3b_no_year_residual, p3_m4_horizon_specialists]
+groups: {G1: [1], G23: [2, 3], G47: [4, 5, 6, 7]}
+weights:
+  G1: [0.3721960318740852, 0.01282516186268813, 6.424956663160682e-18, 0.42653995496416455, 0.06381775245258996, 0.12462109884647224]
+  G23: [0.10260241182311907, 3.4931638744767345e-18, 3.3792379430710312e-18, 0.6187632141016163, 0.14081501883982047, 0.13781935523544407]
+  G47: [0.021291054521732395, 0.003768257474102334, 0.12106697893487556, 0.4341202676629242, 0.17041380877506893, 0.24933963263129666]
+calculation: arithmetic_mean_of_F01_and_F02_directional_weights_then_renormalize
+constraints: {nonnegative: true, sum_to_one: true, pooled_reoptimization: false, per_horizon_optimization: false, h6_override: false, clipping: false, intercept: false}
+directional_source: reports/phase3e1_weights.json
+directional_source_sha256: d9717dbb3ac5201db3d02f130dafe653cef64515369b33a677d6c94a2c850044

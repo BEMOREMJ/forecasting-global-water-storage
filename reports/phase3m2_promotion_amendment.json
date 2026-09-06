@@ -1,0 +1,23 @@
+{
+  "schema_version": "phase3m2-promotion-amendment-v1",
+  "authoritative_for": "promotion_gate_only",
+  "source_metrics": "reports/phase3m2_metrics.json",
+  "source_metrics_sha256": "3e391112cb4a890230913fcfa4b4c59e74442a0c484f7551d6e8815adf9f8e0a",
+  "reason": "The generated aggregate gate checked overall masked RMSE; the frozen gate requires each masked horizon to be improved or protected.",
+  "masked_horizon_comparison": {
+    "2": {"p3m2": 0.5858131606240873, "phase2": 0.6050965384485193, "change": -0.019283377824432013, "protected": true},
+    "3": {"p3m2": 0.594264126650624, "phase2": 0.612377877762643, "change": -0.01811375111201896, "protected": true},
+    "4": {"p3m2": 0.585338171746604, "phase2": 0.6091505102699749, "change": -0.023812338523370946, "protected": true},
+    "5": {"p3m2": 0.6167450412493524, "phase2": 0.6239483041083552, "change": -0.007203262859002857, "protected": true},
+    "6": {"p3m2": 0.6760016853124736, "phase2": 0.6433390618674247, "change": 0.03266262344504889, "protected": false},
+    "7": {"p3m2": 0.6973801081868504, "phase2": 0.691006637907611, "change": 0.006373470279239402, "protected": false}
+  },
+  "corrected_gate": {
+    "pooled": true,
+    "folds": true,
+    "coverage": true,
+    "leakage": true,
+    "masked_horizons_protected": false,
+    "eligible": false
+  }
+}

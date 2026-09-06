@@ -1,0 +1,89 @@
+schema_version: phase3m2-enhanced-residual-v1
+experiment_id: P3-M2
+status: preregistered_not_run
+execution_limit: 1
+target: target_minus_last_observed_tws
+reconstruction: last_observed_tws_plus_predicted_residual
+base_features: [last_observed_tws, effective_horizon, latitude, longitude, input_year, input_calendar_month, month_sin, month_cos, SPEI_01_t, SPEI_03_t, SPEI_06_t, SPEI_12_t, SOIL_MOISTURE_t]
+added_features:
+  - {name: second_last_observed_tws, type: float32, source: history, missing: nan}
+  - {name: observation_gap_months, type: float32, source: history, missing: nan}
+  - {name: historical_tws_slope, type: float32, source: derived_history, missing: nan}
+  - {name: seasonal_history_tws, type: float32, source: history, missing: nan}
+  - {name: seasonal_history_age_months, type: float32, source: history, missing: nan}
+  - {name: seasonal_tws_difference, type: float32, source: derived_history, missing: nan}
+  - {name: spei_01_minus_03, type: float32, source: row, missing: reject}
+  - {name: spei_03_minus_06, type: float32, source: row, missing: reject}
+  - {name: spei_06_minus_12, type: float32, source: row, missing: reject}
+  - {name: soil_moisture_anomaly, type: float32, source: fold_fitted_predictor, missing: reject}
+  - {name: latitude_sin, type: float32, source: row, missing: reject}
+  - {name: latitude_cos, type: float32, source: row, missing: reject}
+  - {name: longitude_sin, type: float32, source: row, missing: reject}
+  - {name: longitude_cos, type: float32, source: row, missing: reject}
+  - {name: second_last_available, type: float32, source: indicator, missing: reject}
+  - {name: slope_available, type: float32, source: indicator, missing: reject}
+  - {name: seasonal_history_available, type: float32, source: indicator, missing: reject}
+  - {name: seasonal_difference_available, type: float32, source: indicator, missing: reject}
+  - {name: soil_anomaly_reference_available, type: float32, source: indicator, missing: reject}
+history_definitions:
+  second_last: latest_same_location_observed_tws_strictly_before_last_observed_timestamp
+  gap: calendar_months_between_second_last_and_last_observed_timestamp
+  slope: (last_observed_tws-second_last_observed_tws)/observation_gap_months
+  seasonal: latest_same_location_observed_tws_with_target_calendar_month_and_source_at_or_before_input
+  seasonal_age: calendar_months_between_seasonal_source_and_target_timestamp
+  seasonal_difference: last_observed_tws-seasonal_history_tws
+soil_reference:
+  statistic: mean
+  fitting_population: distinct_location_input_month_predictors_from_corresponding_fold_training_examples
+  grouping_and_fallback:
+    - {level: 0, group: location_and_input_calendar_month}
+    - {level: 1, group: location_all_months}
+    - {level: 2, group: global_input_calendar_month}
+    - {level: 3, group: global_all_months}
+  anomaly: current_soil_moisture_minus_selected_reference_mean
+  validation_or_target_fitting: forbidden
+provenance:
+  canonical_location_required: true
+  source_timestamp_at_or_before_input: true
+  input_before_target: true
+  validation_target_source_forbidden: true
+  future_source_forbidden: true
+  adjacent_row_assumption_forbidden: true
+  recursion: disabled
+sources:
+  phase2c: artifacts/phase2c/horizon_training_examples_v1.parquet
+  phase2d_config: configs/phase2d_lightgbm.yaml
+  train: data/processed/Train.parquet
+  test: data/processed/Test.parquet
+identities:
+  phase2c: 078ad361f03159ddd5b1f1f0a30e311d261ce82e1ab938d4e56cf56e2885e31b
+  phase2c_F01: 687d87cee219ca3ee5b177d14ef15e166b70cd2e7561c384b323773780258ba4
+  phase2c_F02: 0cb4eb1ba238ada4fa0d35594f63bafeb95daf24091a1fa8ca0a3e0b8542e690
+  validation: dfafe4ae008ac4180f3f92a54ca825c779ab4768b0ba870e22dd1cd4e14088c9
+  comparable_rows: 2b27c3e0d376965789abab1b1f7dcf3577a8d15b374c03d0a312e39fb4607c0a
+populations:
+  training: {F01: 1007523, F02: 992477, pooled: 2000000}
+  validation: {F01: 278059, F02: 273906, pooled: 551965}
+resources:
+  threads: 2
+  seed: 20260904
+  rounds: 200
+  duckdb_memory_limit: 2GB
+  expected_runtime_minutes: [6, 15]
+  expected_peak_rss_mb: 3400
+  expected_incremental_disk_mb: 650
+  expected_materialized_feature_mb: 500
+  available_memory_mb: 4506
+  available_disk_mb: 54269
+  safety_decision: proceed_sequentially_release_each_fold
+expected_columns: {training: 32, validation: 32}
+recent_period_scoring: {enabled: false, reason: not_preregistered}
+output_root: artifacts/phase3m2
+report_metrics: reports/phase3m2_metrics.json
+report_provenance: reports/phase3m2_provenance.json
+report_availability: reports/phase3m2_feature_availability.json
+report_soil_F01: reports/phase3m2_soil_F01.json
+report_soil_F02: reports/phase3m2_soil_F02.json
+promotion_gate:
+  pooled_maximum_rmse: 0.5879872454156464
+  fold_maximum_rmse: {F01: 0.5985777539596151, F02: 0.5973871814101902}

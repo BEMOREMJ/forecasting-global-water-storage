@@ -1,0 +1,20 @@
+schema_version: phase3e1-crossfit-v1
+experiment_id: P3-E1
+components: [persistence, phase2_raw_lightgbm, p3_m1_residual, p3_m2_enhanced_residual, p3_m3b_no_year_residual, p3_m4_horizon_specialists]
+groups: {G1: [1], G23: [2, 3], G47: [4, 5, 6, 7]}
+optimizer:
+  method: SLSQP
+  initial_weights: [0.16666666666666666, 0.16666666666666666, 0.16666666666666666, 0.16666666666666666, 0.16666666666666666, 0.16666666666666666]
+  objective: mean_squared_error
+  tolerance: 1.0e-12
+  maximum_iterations: 1000
+  feasibility_tolerance: 1.0e-8
+  stabilization: 0.0
+  intercept: false
+paths:
+  persistence: artifacts/phase2b/run-20260904T061036Z-persistence-oof.parquet
+  phase2_raw_lightgbm: artifacts/phase2d/run-20260904T064720Z-lightgbm_basic-oof.parquet
+  p3_m1_residual: artifacts/phase3m1/p3m1-absolute-oof.parquet
+  p3_m2_enhanced_residual: artifacts/phase3m2/p3m2-absolute-oof.parquet
+  p3_m3b_no_year_residual: artifacts/phase3m3b/p3m3b-absolute-oof.parquet
+  p3_m4_horizon_specialists: artifacts/phase3m4/p3m4-absolute-oof.parquet

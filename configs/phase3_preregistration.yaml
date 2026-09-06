@@ -1,0 +1,333 @@
+schema_version: phase3-preregistration-v1
+status: proposed
+phase: 3
+starting_checkpoint: 412fe9d2ba0184ca4ae0f13560ffaf1c0be7f327
+phase2_checkpoint: 238f7f1c59d2213adc263b7d9def6b6974891240
+starting_remote_state:
+  origin_configured: true
+  origin_url: https://github.com/BEMOREMJ/forecasting-global-water-storage.git
+  branch: main
+  upstream: origin/main
+  history_backed_up_before_phase3a: true
+  owner_authorized_backup: true
+  phase3a_created_modified_or_used_remote: false
+  interpretation: expected_starting_state_update
+  phase3_remote_policy: >-
+    Do not push, upload, or modify remote configuration without later explicit authorization.
+
+frozen_contract:
+  validation_version: validation-v1
+  validation_id: dfafe4ae008ac4180f3f92a54ca825c779ab4768b0ba870e22dd1cd4e14088c9
+  mask: mask-exact-complete-v1
+  tws_provenance: tws-observed-only-v1
+  recursion: recursion-disabled-v1
+  metric: rmse-row-pooled-v1
+  comparable_rows: 551965
+  comparable_row_sha256: 2b27c3e0d376965789abab1b1f7dcf3577a8d15b374c03d0a312e39fb4607c0a
+  phase2c_artifact_sha256: 078ad361f03159ddd5b1f1f0a30e311d261ce82e1ab938d4e56cf56e2885e31b
+  phase2c_retained_target_sha256: 4e1fc3745b754ae0020e111fa0d4e65afd3daf8b63034b7095340d3dc15fe95d
+
+references:
+  phase2_lightgbm_pooled_oof_rmse: 0.5929872454156464
+  persistence_pooled_oof_rmse: 0.6737224552267717
+  first_public_score: 0.778144248
+  public_minus_local_gap: 0.185157248
+  public_evidence_role: diagnostic_only
+
+execution_controls:
+  expensive_complete_validation_run_limit: 5
+  sequential_execution: true
+  lightgbm_threads: 2
+  seed: 20260904
+  approximate_training_example_cap: 2000000
+  reuse_phase2c_examples: true
+  pre_run_memory_and_disk_estimate_required: true
+  rerun_policy: failed_incomplete_or_defect_invalidated_only
+  broad_hyperparameter_tuning: false
+  leaderboard_tuning: false
+
+common_reporting:
+  - pooled_oof_rmse
+  - fold_rmse
+  - horizon_1_to_7_rmse
+  - observed_vs_masked_input_rmse
+  - latitude_band_rmse
+  - spei_bin_rmse
+  - coverage
+  - runtime_seconds
+  - peak_memory_mb
+  - artifact_sha256
+  - model_size_bytes
+
+promotion_gate:
+  minimum_absolute_pooled_rmse_improvement: 0.005
+  learned_model_reference_rmse: 0.5929872454156464
+  maximum_eligible_pooled_rmse: 0.5879872454156464
+  require_no_material_fold_degradation: true
+  material_fold_degradation_definition: >-
+    An RMSE increase greater than 0.005 relative to the stored Phase 2 LightGBM
+    result on the corresponding fold.
+  phase2_fold_rmse_references:
+    F01: 0.5935777539596151
+    F02: 0.5923871814101902
+  maximum_eligible_fold_rmse:
+    F01: 0.5985777539596151
+    F02: 0.5973871814101902
+  require_complete_coverage: true
+  require_masked_horizons_improved_or_protected: true
+  require_recent_period_credibility: true
+  require_leakage_safe_provenance: true
+
+experiments:
+  P3-D1:
+    kind: expensive_complete_validation_run
+    status: completed_once
+    hypothesis: >-
+      Performance closer to the Test period differs because temporal, covariate,
+      missingness, or target distributions drift relative to validation-v1.
+    changed_factor: recent_period_diagnostic_window
+    models:
+      - phase2_fixed_lightgbm
+      - persistence
+    constraints:
+      supplied_train_only: true
+      future_information: false
+      separate_from_validation_v1: true
+      official_test_mask_equivalence_claimed: false
+    construction:
+      historical_origin: 2014-10-01
+      input_month_range: [2014-10-01, 2015-07-01]
+      target_month_range: [2014-11-01, 2015-08-01]
+      reason_latest_feasible: >-
+        No post-2008 origin can transplant every official sparse Test relative month
+        because Train has internal calendar gaps. The final uninterrupted block with
+        exact next-month targets runs from 2014-10 through 2015-07.
+      mask_source: none_observed_horizon_1_only
+      expected_rows: 156267
+      expected_locations: 15710
+      history_gate: validation-v1
+      model_training_cutoff: 2008-12-01
+      model_source: stored_phase2d_F02_model
+      training_sample_source: stored_phase2c_F02_examples
+      training_sample_rows: 992477
+      lightgbm_configuration: configs/phase2d_lightgbm.yaml
+      persistence: exact_last_genuinely_observed_tws
+    preregistered_resource_estimate:
+      runtime_minutes: [2, 6]
+      peak_memory_mb: 1800
+      incremental_disk_mb: 80
+      available_memory_mb_at_preregistration: 4927
+      available_disk_mb_at_preregistration: 60294
+      expected_retained_rows: [156267, 156267]
+      expected_source_block_coverage_fraction: [1.0, 1.0]
+      safety_decision: proceed
+    diagnostic_role: secondary_robustness_only
+    cannot_replace_validation_v1: true
+    temporal_stress_gap_months:
+      model_training_cutoff_to_diagnostic_origin: 70
+    amendment_after_interrupted_attempt: >-
+      Owner requested a restart after runtime exceeded ten minutes. The invalidated
+      attempt retained no artifacts. The restart reuses the stored leakage-safe F02
+      Phase 2 model and exact F02 sample instead of rematerializing or refitting;
+      this makes P3-D1 a stricter fixed-model temporal stress diagnostic.
+    structural_difference: >-
+      Unlike validation-v1 and Test, P3-D1 is an observed-only horizon-1 panel over
+      ten consecutive recent Train input months. It cannot assess transplanted mask
+      behavior or horizons 2-7 and cannot replace validation-v1.
+    acceptance_rule: >-
+      Retain as diagnostic evidence if its rows and cutoff are reproducible,
+      leakage-safe, and explicitly distinguished from validation-v1; it never
+      replaces or alters the principal OOF metric.
+
+  P3-M1:
+    kind: expensive_complete_validation_run
+    status: preregistered
+    hypothesis: >-
+      Change from last observed TWS generalizes better than absolute TWS.
+    status: completed_once_promotion_gate_failed
+    configuration: configs/phase3m1_residual_lightgbm.yaml
+    target: target_minus_last_observed_tws
+    reconstruction: last_observed_tws_plus_predicted_change
+    features: phase2d_core_features
+    parameters: phase2d_fixed_lightgbm
+    acceptance_rule: common_promotion_gate
+
+  P3-M2:
+    kind: expensive_complete_validation_run
+    status: preregistered
+    hypothesis: >-
+      Compact leakage-safe temporal and hydrological history features improve
+      the residual representation, especially for masked and longer horizons.
+    target: target_minus_last_observed_tws
+    base_features: phase2d_core_features
+    added_feature_family:
+      - second_last_observed_tws
+      - last_two_observation_calendar_gap
+      - historical_tws_slope
+      - same_calendar_month_historical_tws
+      - seasonal_tws_difference
+      - spei_01_minus_03
+      - spei_03_minus_06
+      - spei_06_minus_12
+      - fold_local_soil_moisture_anomaly
+      - latitude_longitude_spherical_encodings
+      - optional_history_availability_indicators
+    provenance_requirement: same_location_and_timestamp_for_every_tws_source
+    sample_policy: extend_existing_phase2c_retained_examples
+    parameters: phase2d_fixed_lightgbm
+    acceptance_rule: common_promotion_gate
+    status: completed_once_promotion_gate_failed
+    configuration: configs/phase3m2_enhanced_residual.yaml
+
+  P3-M3:
+    kind: expensive_complete_validation_run
+    status: completed_once_promotion_gate_passed
+    selection_timing: after_P3-D1_before_P3-M1_or_P3-M2_results
+    candidates:
+      seasonal_anomaly:
+        select_if: spatial_or_seasonal_baseline_variation_dominates
+      no_raw_year_residual:
+        select_if: drift_audit_indicates_raw_year_or_temporal_extrapolation_is_harmful
+    exactly_one_candidate: true
+    selection_record_required_before_execution: true
+    selected_candidate: no_raw_year_residual
+    selected_before_P3-M1_or_P3-M2: true
+    selection_evidence:
+      recent_input_year_out_of_phase2_training_range_fraction: 1.0
+      test_input_year_out_of_phase2_training_range_fraction: 1.0
+      recent_lightgbm_rmse: 0.7565834086766431
+      recent_persistence_rmse: 0.8395729310406177
+      rationale: >-
+        Raw input year requires extrapolation for every recent and Test row, while
+        the measured hydrological features are almost entirely within Phase 2
+        training ranges. Removing raw year directly tests temporal extrapolation
+        risk without changing the residual target or fixed model parameters.
+    target: target_minus_last_observed_tws
+    reconstruction: last_observed_tws_plus_predicted_change
+    features: phase3_M1_core_features_excluding_only_input_year
+    feature_interpretation_amendment:
+      timing: before_P3-M3B_fitting
+      reason: >-
+        The prior phrase phase3_M2_features_excluding_input_year was ambiguous and
+        inconsistent with the originally selected controlled raw-year ablation.
+        This clarification follows the pre-result drift hypothesis and does not use
+        P3-M1 or P3-M2 results.
+      controlled_reference: P3-M1
+      only_removed_model_feature: input_year
+      retained_month_feature: input_calendar_month
+      enhanced_P3_M2_features_added: false
+      seasonal_anomaly_alternative: rejected_not_run
+    parameters: phase2d_fixed_lightgbm
+    acceptance_rule: common_promotion_gate
+
+  P3-M4:
+    kind: expensive_complete_validation_run
+    status: completed_once_promotion_gate_failed
+    hypothesis: >-
+      Fixed-parameter horizon-group specialists reduce bias across distinct
+      forecast lengths without per-group tuning.
+    representation: best_already_approved_phase3_target_and_features
+    groups:
+      - horizon_1
+      - horizons_2_3
+      - horizons_4_7
+    horizon_1_persistence_allowed_if_supported: true
+    parameters: fixed_no_group_search
+    acceptance_rule: common_promotion_gate
+
+  P3-E1:
+    kind: artifact_only_cross_fitted_ensemble
+    status: completed_once_promotion_gate_failed
+    expensive_complete_validation_run: false
+    hypothesis: >-
+      A guarded convex blend can protect persistence-like short-horizon behavior
+      while retaining learned-model gains elsewhere.
+    candidate_components:
+      - persistence
+      - phase2_raw_lightgbm
+      - best_phase3_residual
+      - horizon_group_specialists
+      - seasonal_anomaly_if_selected
+    weights:
+      non_negative: true
+      sum_to_one: true
+      granularity: horizon_group
+      fit_on_F01_evaluate_on_F02: true
+      fit_on_F02_evaluate_on_F01: true
+      same_fold_fit_and_evaluation_forbidden: true
+    acceptance_rule: common_promotion_gate
+
+budget_accounting:
+  expensive_slots_reserved:
+    - P3-D1
+    - P3-M1
+    - P3-M2
+    - P3-M3
+    - P3-M4
+  artifact_only_slots:
+    - P3-E1
+  expensive_runs_executed: 5
+  p3d1_attempts:
+    - outcome: interrupted_before_metrics_completion
+      reason: generic_rowwise_metric_reporting_exceeded_operational_time_limit
+      valid_artifacts_retained: false
+      rerun_authorized_by_owner: true
+    - outcome: invalidated_and_interrupted
+      reason: calendar_safety_check_accidentally_formed_cartesian_product
+      model_fit_or_prediction_reached: false
+      valid_artifacts_retained: false
+      rerun_policy: defect_corrected_same_frozen_configuration
+    - outcome: failed_pre_execution_assertion
+      reason: hard_coded_F02_row_count_differed_from_authoritative_manifest
+      model_fit_or_prediction_reached: false
+      valid_artifacts_retained: false
+    - outcome: failed_construction_feasibility_check
+      reason: no_post_2008_origin_has_complete_official_template_calendar_coverage
+      model_fit_or_prediction_reached: false
+      valid_artifacts_retained: false
+      resolution: preregister_latest_uninterrupted_recent_train_block
+    - outcome: failed_before_metrics
+      reason: generic_canonicalizer_rejected_integer_horizon_keys
+      prediction_artifacts_retained: false
+      resolution: use_byte_level_yaml_sha256_as_configuration_identity
+    - outcome: completed
+      valid_execution_count: 1
+      runtime_seconds: 15.200146499963012
+      retained_rows: 156267
+      configuration_id: 25a4afa2e7ac22754d6d07222e1e48abfdbc4a03cd857174d2e960ebe148e185
+  p3m1_attempts:
+    - outcome: interrupted_after_both_fold_checkpoints
+      reason: promotion_reporter_used_P3-D1_fold_label
+      valid_fold_models_and_predictions_retained: true
+      resume_policy: verify_and_reuse_both_folds_without_retraining_or_reprediction
+    - outcome: completed_from_verified_fold_checkpoints
+      successful_fold_fit_counts: {F01: 1, F02: 1}
+      configuration_id: 379020de9b1644545241a2b7ab297bf5af78ce348cb772182dffb3a173c49479
+      pooled_rmse: 0.5892961918918179
+      promotion_eligible: false
+      reason: pooled_improvement_0.003691_below_required_0.005
+  p3m2_attempts:
+    - outcome: failed_before_materialization_or_fit
+      reason: soil_statistic_metadata_used_reserved_SQL_identifier_level
+      valid_artifacts_retained: false
+      resolution: rename_metadata_column_to_reference_level
+    - outcome: failed_before_feature_completion_or_fit
+      reason: Phase2C_anchor_timestamp_requires_tws_source_month_alias
+      valid_artifacts_retained: false
+      resolution: normalize_training_anchor_timestamp_as_last_observed_month
+    - outcome: completed
+      successful_fold_fit_counts: {F01: 1, F02: 1}
+      configuration_id: c269a0e5f4614426c45b429c688606fca43ec74d9d067e7f09c08494816f492f
+      pooled_rmse: 0.5813532667941972
+      promotion_eligible: false
+      reason: masked_horizons_6_and_7_degraded_by_more_than_0.005
+
+phase3a_notes:
+  remote_starting_state_update: >-
+    After the original Phase 3 prompt was prepared but before Phase 3A began,
+    the owner intentionally configured origin and pushed main as an authorized
+    backup. This is expected starting state, not a discrepancy or Phase 3 change.
+  remote_policy: >-
+    Phase 3 must not push, upload, or modify remote configuration without later
+    explicit authorization.
+  model_runs_started: false

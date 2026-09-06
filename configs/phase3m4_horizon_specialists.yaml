@@ -1,0 +1,25 @@
+schema_version: phase3m4-specialists-v1
+experiment_id: P3-M4
+status: preregistered_not_run
+execution_limit: 1
+groups: {G1: [1], G23: [2, 3], G47: [4, 5, 6, 7]}
+h1_choice: learned_specialist
+h1_persistence_rejected_before_fit: true
+features: [last_observed_tws, effective_horizon, latitude, longitude, input_calendar_month, month_sin, month_cos, SPEI_01_t, SPEI_03_t, SPEI_06_t, SPEI_12_t, SOIL_MOISTURE_t]
+training_artifact: artifacts/phase2c/horizon_training_examples_v1.parquet
+phase2_model_config: configs/phase2d_lightgbm.yaml
+populations:
+  training:
+    F01: {G1: 336960, G23: 392184, G47: 278379}
+    F02: {G1: 331257, G23: 386054, G47: 275166}
+  validation:
+    F01: {G1: 92995, G23: 108236, G47: 76828}
+    F02: {G1: 91421, G23: 106544, G47: 75941}
+identities:
+  comparable_rows: 2b27c3e0d376965789abab1b1f7dcf3577a8d15b374c03d0a312e39fb4607c0a
+  phase2c_artifact: 078ad361f03159ddd5b1f1f0a30e311d261ce82e1ab938d4e56cf56e2885e31b
+resources:
+  threads: 2
+  expected_runtime_minutes: [3, 8]
+  expected_peak_memory_mb: 1800
+  expected_incremental_disk_mb: 120

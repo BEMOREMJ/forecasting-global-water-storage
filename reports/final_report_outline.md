@@ -82,3 +82,7 @@ when availability assumptions change. Final wording pending.
 
 Use measured two-thread runtime, peak RSS, capped sampling, sequential folds, and artifact sizes.
 Energy/carbon conversion remains pending an approved measurement method.
+
+## Phase 3 evidence
+
+Report the frozen validation-v1 comparison, recent-period limitation, raw-year drift, residual target, and the promotion decisions. P3-M3B is the sole promoted learned design (0.583923). P3-E1's stronger pooled result is explicitly non-promoted because horizon 6 failed protection. Production reused the deterministic two-million-row Phase 2G sample; both candidates are generated locally and not uploaded.

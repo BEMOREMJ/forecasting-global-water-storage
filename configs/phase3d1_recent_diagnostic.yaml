@@ -1,0 +1,39 @@
+schema_version: phase3d1-recent-diagnostic-v1
+experiment_id: P3-D1
+execution_limit: 1
+historical_origin: 2014-10-01
+recent_input_end: 2015-07-01
+test_origin: 2015-09-01
+required_relative_months: 18
+latest_train_month: 2015-08-01
+construction: latest_uninterrupted_train_input_target_block
+expected_recent_rows: 156267
+expected_recent_locations: 15710
+history_gate: {minimum_observations: 12, minimum_span_months: 12}
+sampling:
+  cap: 992477
+  seed: 20260904
+  algorithm: sha256-rank-within-horizon-v1
+  weights: population_count_divided_by_retained_count_within_horizon
+  retained_by_horizon: {1: 668217, 2: 445043, 3: 333195, 4: 221778, 5: 110873, 6: 110514, 7: 110380}
+sources:
+  train_cache: data/processed/Train.parquet
+  test_cache: data/processed/Test.parquet
+  phase2c_training: artifacts/phase2c/horizon_training_examples_v1.parquet
+  phase2c_manifest: reports/phase2c_horizon_examples_manifest.json
+  phase2d_config: configs/phase2d_lightgbm.yaml
+  phase2d_oof: artifacts/phase2d/run-20260904T064720Z-lightgbm_basic-oof.parquet
+  phase2d_f02_model: artifacts/phase2d/run-20260904T064720Z-lightgbm_basic-F02.txt
+  phase2g_test_features: artifacts/phase2g/test_features.parquet
+  phase2g_test_predictions: artifacts/phase2g/test_predictions.parquet
+identities:
+  data_manifest: 445ce8f92d21abe7e103ad77f38091a4f55e0466d31515d33fbd40c06fb8e533
+  validation: dfafe4ae008ac4180f3f92a54ca825c779ab4768b0ba870e22dd1cd4e14088c9
+  comparable_rows: 2b27c3e0d376965789abab1b1f7dcf3577a8d15b374c03d0a312e39fb4607c0a
+  train_cache: 47888bf5c106f92249e3767b830177d10668d5a73b3505bd7fe276c32accb183
+resources: {threads: 2, duckdb_memory_limit: 2GB, spill_directory: tmp/phase3d1_duckdb}
+output:
+  lightgbm_predictions: artifacts/phase3d1/recent_lightgbm_predictions.parquet
+  persistence_predictions: artifacts/phase3d1/recent_persistence_predictions.parquet
+  metrics: reports/phase3d1_metrics.json
+  drift: reports/phase3_drift_audit.json

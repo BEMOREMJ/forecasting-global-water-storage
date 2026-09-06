@@ -27,3 +27,5 @@
 | Innovation | Demonstrated creative contribution | Final report | Not started | Innovation/practicality 20% | Detailed rubric absent | No claim yet |
 | Practicality | Operational feasibility evidence | Compute policy and final report | Structure created | Innovation/practicality 20% | Deployment assumptions | No claim yet |
 | Reproducibility | Runnable code, lock, seeds and artifacts | uv.lock, manifest, registry | Structure created | Top-10 review | Package format clarification | 72-hour requirement |
+| Phase 3 generalization | Recent stress test, drift audit, five frozen experiments, artifact-only ensemble | `reports/phase3b_report.md` through `reports/phase3g_report.md` | Complete | P3-M3B only promotion-eligible learned strategy | Hidden Test targets unavailable | Raw year removed; validation-v1 unchanged |
+| Phase 3 production | One P3-M3B fit and two validated local candidates | `reports/phase3h_production_manifest.json`; `notebooks/02_core_modeling.ipynb` | Generated, not uploaded | Primary candidate | Public behavior unknown | Primary SHA `b9b1b95e...`; persistence diagnostic only |
