@@ -1,0 +1,20 @@
+{
+  "schema_version": "submission-public-result-v1",
+  "submission_filename": "submissions/phase2g_lightgbm_basic.csv",
+  "candidate_sha256": "ebb1f53ac5ef75a16f618e714bc2a95ba7a84269ac86c80315896944a5e1b124",
+  "model": "lightgbm_basic",
+  "production_run_id": "run-20260904T100126Z-phase2g-lightgbm-basic",
+  "source_commit": "238f7f1c59d2213adc263b7d9def6b6974891240",
+  "submission_date": "2026-09-04",
+  "status": "uploaded",
+  "public_score": 0.778144248,
+  "public_rank_snapshot": 320,
+  "leading_score_snapshot": 0.55958798,
+  "snapshot_warning": "Public rank and leading score are time-dependent leaderboard snapshots and can change.",
+  "evidence_source": "User-reported from the Zindi leaderboard interface.",
+  "local_oof_score": 0.592987,
+  "public_minus_local_gap": 0.185157248,
+  "gap_definition": "public_score - local_oof_score",
+  "validation_policy": "validation-v1 remains unchanged; leaderboard evidence does not authorize validation changes",
+  "registry_handling": "Experiment registry unchanged because it contains validation runs, while this result belongs to the separate Phase 2G production run."
+}
