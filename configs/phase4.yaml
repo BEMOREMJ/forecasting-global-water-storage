@@ -1,0 +1,47 @@
+schema_version: phase4-v1
+seed: 20260904
+execution_limit_per_experiment: 1
+threads: 2
+memory_limit: 3GB
+training_artifact: artifacts/phase2c/horizon_training_examples_v1.parquet
+reference_oof: artifacts/phase3m3b/p3m3b-absolute-oof.parquet
+model_config: configs/phase2d_lightgbm.yaml
+features:
+  - last_observed_tws
+  - effective_horizon
+  - latitude
+  - longitude
+  - input_calendar_month
+  - month_sin
+  - month_cos
+  - SPEI_01_t
+  - SPEI_03_t
+  - SPEI_06_t
+  - SPEI_12_t
+  - SOIL_MOISTURE_t
+spatial_features:
+  - neighbour_SPEI_01_mean
+  - neighbour_SPEI_03_mean
+  - neighbour_SPEI_06_mean
+  - neighbour_SPEI_12_mean
+  - neighbour_soil_mean
+  - neighbour_climatological_change
+  - neighbour_count
+  - neighbour_climatology_count
+seasonal_fallbacks: [location_month_pair, latitude_band_month_pair, global_month_pair, zero]
+neighbour_rule: four_cardinal_grid_cells_at_0.5_degree_spacing
+recency_weight: 0.5 ** (age_months / 24)
+catboost:
+  maximum_projected_peak_memory_mb: 3000
+  threads: 2
+promotion:
+  pooled_rmse_maximum: 0.578923
+  fold_regression_tolerance: 0.005
+  horizon_6_7_regression_tolerance: 0.005
+  recent_regression_tolerance: 0.005
+  coverage_required: 1.0
+  peak_memory_maximum_mb: 3000
+populations:
+  training: {F01: 1007523, F02: 992477, pooled: 2000000}
+  validation: {F01: 278059, F02: 273906, pooled: 551965}
+

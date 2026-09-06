@@ -90,3 +90,11 @@ Report the frozen validation-v1 comparison, recent-period limitation, raw-year d
 ### Phase 3 public-result evidence (post-closeout)
 
 P3-M3B scored 0.766408529 publicly (rank snapshot 292), improving on Phase 2 by 0.011735719 but retaining a 0.182485529 public-minus-local gap. The P3-E1 diagnostic scored 0.878413825, deteriorating 0.100269577 versus Phase 2, and remains rejected. Scores/ranks are changeable user-reported observations and cannot alter validation-v1 or justify ensemble repair.
+
+## Phase 4 evidence
+
+Retain P3-M3B. Three pre-registered two-fold runs were rejected: seasonal-change anchor 0.811096,
+cardinal-neighbour residual features 0.778214, and fixed 24-month-half-life recency weighting
+0.584126. The recency model preserved folds, horizons 6/7, coverage, and the recent diagnostic but
+missed the 0.578923 pooled promotion gate and was slightly worse than P3-M3B. CatBoost was not
+installed, so the registered LightGBM fallback was used. No candidate or ensemble was generated.
