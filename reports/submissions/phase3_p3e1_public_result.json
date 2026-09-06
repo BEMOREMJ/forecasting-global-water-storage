@@ -1,0 +1,17 @@
+{
+  "schema_version": "submission-public-result-v1",
+  "submission_filename": "submissions/phase3_p3e1_guarded_ensemble_diagnostic.csv",
+  "candidate_sha256": "7e8a70bd8410988b892c1603959eabcc8921cfae78a26a526e0de5eab2d93efc",
+  "model": "P3-E1_guarded_ensemble",
+  "source_commit": "2df0d876efdff6720da7d728dac661dec72c83c1",
+  "submission_date": "2026-09-06",
+  "status": "uploaded_diagnostic_and_rejected",
+  "public_score": 0.878413825,
+  "local_oof_score": 0.571686,
+  "deterioration_versus_phase2": 0.100269577,
+  "evidence_source": "User-reported from the Zindi leaderboard interface.",
+  "snapshot_warning": "Public scores and rank snapshots are changeable observations.",
+  "validation_policy": "Public results cannot alter validation-v1.",
+  "explicit_prohibition": "This ensemble must not be repaired or promoted using its leaderboard result.",
+  "identity_scope": "Public submission metadata is separate from validation and production identities."
+}
