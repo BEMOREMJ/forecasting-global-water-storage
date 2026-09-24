@@ -24,6 +24,9 @@ The competition page was retrieved in a JavaScript-limited, unauthenticated form
 - **Tools:** publicly available open-source languages, tools, and packages only. Openly
   available pretrained models are permitted. AutoML is prohibited. Paid services and
   card-required free trials are prohibited. (Webpage Rules and Reproducibility.)
+- **Data sharing:** challenge data is identified as CC-BY-SA 4.0. The rules state that participants
+  may access, use, and share it for commercial, non-commercial, research, or educational purposes.
+  (Webpage Rules, Datasets/packages/general principles.)
 - **External data:** only challenge data and freely, operationally available datasets; data
   should be available within one month of acquisition. Copernicus additions must exist at
   prediction time, exclude future GRACE/TWS information, and be documented. (Webpage Info and
@@ -57,6 +60,6 @@ trustworthiness weights, or the detailed innovation rubric. These remain unresol
 
 - [Competition Info, Evaluation and Rules](https://zindi.world/competitions/one-step-ahead-of-drought-forecasting-global-water-storage-challenge)
 - [Competition Data tab](https://zindi.world/competitions/one-step-ahead-of-drought-forecasting-global-water-storage-challenge/data)
+- [Creative Commons Attribution-ShareAlike 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
 - `references/official/StarterNotebook.ipynb` (37 cells; cell references above are 1-based)
 - `references/official/Trustworthiness_Evaluation.pdf` (2 pages)
-

@@ -1,123 +1,209 @@
-# Drought Forecasting: Global Water Storage Challenge
+# Forecasting Global Water Storage with Geospatial Machine Learning
 
-This private, non-publishable working repository supports the Zindi **A Step Ahead of
-Drought: Forecasting Global Water Storage Challenge**. The task is to predict next-month
-Total Water Storage (TWS) globally. Masked test `TWS_t` values create effective forecast
-horizons of approximately 1–7 months.
+This project forecasts monthly global Total Water Storage (TWS): water held in groundwater,
+soil, surface water, and snow. It was developed for Zindi's **A Step Ahead of Drought:
+Forecasting Global Water Storage Challenge**, where masked observations turned an apparent
+one-month-ahead task into a mixed one-to-seven-month forecasting problem. The repository is a
+completed portfolio case study in geospatial machine learning, time-series validation, missing
+observations, reproducible experimentation, and memory-aware local processing.
 
-## Status
+## Problem formulation
 
-Phase 1 is closed and leakage-safe `validation-v1` is frozen. Phase 2A--2E established the
-prediction contract, six deterministic baselines, horizon-aware training data, one fixed
-LightGBM benchmark, and a validated seven-run comparison. `lightgbm_basic` is preferred at
-pooled OOF RMSE 0.592987; persistence is the strongest deterministic reference at 0.673722.
+Each row represents a one-degree spatial grid cell and input month `t`; the target is TWS in the
+next calendar month, `t+1`. Training rows provide the current TWS, coordinates, date, drought
+indices, soil moisture, and the next-month target. In the test set, 186,913 of 280,961 current-TWS
+values are masked.
 
-The documented final evaluation weights are:
+That masking changes the practical horizon. A prediction after a recent observed TWS value is
+effectively horizon 1, while consecutive masked months extend the gap to as much as horizon 7.
+The implementation therefore tracks each row's last genuinely observed, same-location TWS value
+and its effective horizon. It never fills a masked row with future observations or recursively
+generated TWS under the selected validation policy.
 
-- leaderboard RMSE: 50%;
-- AI trustworthiness: 30%;
-- innovation and practicality: 20%.
+TWS is relevant to drought monitoring because it summarizes water stored above and below the
+land surface. This model predicts that competition target only; it is not a complete drought-risk
+or impact model.
 
-Current official rules prohibit future information and leakage, AutoML, and paid services.
-They require open-source tooling and reproducible work. The top 10 must provide their model,
-code, and report within 72 hours of the organizer request. Unresolved questions—including
-the precise AutoML boundary, AI-assistant use, free Colab use, and detailed external-data
-availability—remain subject to organizer clarification.
+## Dataset
 
-Official sources:
+The supplied files contain 2,154,021 training rows and 280,961 test rows. Major fields are:
 
-- [competition page](https://zindi.world/competitions/one-step-ahead-of-drought-forecasting-global-water-storage-challenge)
-- `references/official/StarterNotebook.ipynb`
-- `references/official/Trustworthiness_Evaluation.pdf`
+- spatial coordinates (`lat`, `lon`) and a monthly timestamp;
+- current TWS, with explicit test masking;
+- Standardized Precipitation-Evapotranspiration Index (SPEI) at 1, 3, 6, and 12 months;
+- near-surface soil moisture;
+- cyclical month encodings; and
+- the next-month TWS target in training data.
 
-## Compute and reproducibility policy
+The structural schema is documented in [the data dictionary](docs/data_dictionary.md). Raw data,
+processed caches, predictions, submissions, and fitted models are excluded from Git. Competition
+data must be obtained from the
+[official competition page](https://zindi.world/competitions/one-step-ahead-of-drought-forecasting-global-water-storage-challenge)
+if it remains available, and placed locally under `data/raw/`.
 
-Development is local-first and free-first. This laptop is the authoritative repository
-environment. Free Google Colab is only a provisional fallback pending organizer
-clarification. Every permitted remote run must return its configuration, metrics, and
-artifacts to this repository workflow so results remain traceable and reproducible.
+## Validation strategy
 
-## Setup
+A random split would allow later months from the same locations to influence training and would
+overstate generalization. The frozen `validation-v1` protocol instead uses two rolling-origin
+folds with target-disjoint evaluation windows:
 
-Install uv, then run:
+1. Fit only on targets available on or before the fold origin.
+2. Transplant the complete test-set masking path to a historical period.
+3. Reconstruct effective horizons 1-7 from genuinely observed TWS anchors.
+4. Fit learned preprocessing inside each fold.
+5. Pool squared errors across all 551,965 out-of-fold rows before taking RMSE.
+
+The design also checks row identities, temporal cutoffs, target overlap, coverage, same-location
+anchors, and mask fidelity. Metrics are reported by fold, horizon, observed versus masked state,
+latitude band, and SPEI range. See the [validation protocol](docs/validation_protocol.md) and
+[leakage threat register](docs/leakage_threat_register.md).
+
+## Modelling approach
+
+The experiment sequence moved from deterministic references to fixed learned candidates:
+
+- global, location, seasonal, trend-seasonal, and persistence baselines;
+- a fixed LightGBM benchmark using spatial, calendar, drought, soil-moisture, anchor, and horizon
+  features;
+- residual LightGBM models that predicted change from the last observed TWS;
+- guarded horizon specialists and a cross-fitted ensemble, retained only as diagnostics when
+  protection gates failed;
+- seasonal-anchor, neighbouring-cell, and recency-weighted challengers; and
+- one fixed CatBoost challenger with location treated categorically.
+
+The original `lightgbm_basic` comparison remains available in
+[`reports/phase2e_comparison.json`](reports/phase2e_comparison.json) and the reporting-only
+[`notebooks/01_baseline_walkthrough.ipynb`](notebooks/01_baseline_walkthrough.ipynb).
+
+The selected model, **P3-M3B**, is a 200-round LightGBM residual model. It predicts the change
+from the last observed same-location TWS using 12 features: that anchor, effective horizon,
+latitude, longitude, calendar month and its sine/cosine encoding, four SPEI windows, and soil
+moisture. Raw year was deliberately removed after temporal drift analysis. The model used a
+deterministic two-million-row training population, two CPU threads, and no tuning sweep,
+recursion, or external data.
+
+CatBoost 1.2.8 was evaluated once on the same residual formulation plus categorical location. It
+used the full two-million-row population but missed the pre-registered promotion threshold and
+degraded on both long horizons and the recent-period diagnostic, so it was rejected.
+
+## Results
+
+Lower RMSE is better. Local out-of-fold (OOF) results and public-leaderboard results use different
+rows and must not be treated as the same evaluation.
+
+| Model or diagnostic | Local pooled OOF RMSE | Public RMSE | Decision |
+|---|---:|---:|---|
+| Persistence | 0.673722 | 0.886420231 | Rejected diagnostic |
+| Fixed LightGBM benchmark | 0.592987 | 0.778144248 | Superseded |
+| P3-M3B no-year residual LightGBM | **0.583923** | **0.766408529** | **Selected reference** |
+| P3-E1 guarded cross-fitted ensemble | 0.571686 | 0.878413825 | Rejected: horizon-6 gate failed |
+| Phase 5 CatBoost challenger | 0.609268 | Not uploaded | Rejected: promotion gates failed |
+
+P3-M3B's public score was 0.182486 worse than its local OOF score. That gap is reported plainly:
+hidden test labels prevent a complete diagnosis, and leaderboard feedback was not used to revise
+the frozen validation protocol or repair rejected models.
+
+## Diagnostics and lessons
+
+- Forecast error generally increased with effective horizon. For P3-M3B, horizon-1 RMSE was
+  0.521314 and horizon-7 RMSE was 0.687764.
+- P3-M3B scored 0.521314 on observed-input rows and 0.612931 on masked-input rows.
+- The CatBoost challenger scored 0.552915 on observed rows, 0.635663 on masked rows, and
+  0.668989/0.700675 at horizons 6/7.
+- On the latest-12-input-month diagnostic, CatBoost scored 0.602518 versus 0.562832 for P3-M3B.
+- More model complexity did not guarantee better temporal transfer: categorical location,
+  neighbouring-cell features, specialist models, and an ensemble all failed at least one frozen
+  promotion gate.
+- Pre-registration and explicit rejection gates made it possible to retain useful negative
+  evidence without promoting a model from one attractive aggregate metric.
+
+These are modelling observations from the recorded validation design, not proven hydrological
+conclusions.
+
+## Repository structure
+
+```text
+configs/                 Frozen experiment and validation configurations
+docs/                    Data, validation, leakage, and decision documentation
+experiments/             Append-only experiment registry
+notebooks/               Lightweight reporting notebooks
+reports/                 Compact metrics, phase closeouts, and final closeout
+src/drought_forecasting/ Reproducible Python implementation
+tests/                   Unit and structural validation tests
+references/official/     Attributed organizer materials
+```
+
+## Reproducing the project
+
+### Install the environment
+
+Python is constrained to 3.12 and dependencies are locked with `uv`.
 
 ```powershell
 uv python install 3.12
 uv sync --dev
 uv run python --version
-uv run pytest
+```
+
+### Supply the excluded data
+
+Download `Train.csv`, `Test.csv`, and `SampleSubmission.csv` from the official competition source
+and place them under `data/raw/`. Their expected names, sizes, and SHA-256 identities are recorded
+in `configs/data_manifest.json`. Do not commit these files.
+
+### Run lightweight verification
+
+```powershell
+$env:PYTHONPATH = 'src'
+uv run python -m drought_forecasting.experiment_registry --validate-only
+uv run pytest tests/test_experiment_registry.py tests/test_phase2_notebook.py tests/test_phase5_catboost.py
 uv run ruff check .
 ```
 
-The lockfile records exact resolved versions. Python is constrained to the 3.12 minor series.
-The lightweight `notebooks/01_baseline_walkthrough.ipynb` can be opened from the repository root
-or notebook directory. Its normal cells load only compact JSON/CSV evidence using installed
-pandas; no extra notebook runtime is required for repository validation.
-
-## Directory map
-
-```text
-configs/                 Versioned configuration
-data/raw/                Ignored competition inputs
-data/processed/          Ignored derived datasets
-docs/                    Decisions and phase closeouts
-experiments/             Experiment registry structure
-notebooks/               Project notebooks
-src/drought_forecasting/ Python source package
-tests/                   Automated tests
-reports/                 Reports and figures
-references/official/     Official competition materials
-submissions/             Generated submission outputs
-models/                  Generated trained models
-artifacts/               Generated run artifacts
-tmp/                     Temporary files
-```
-
-Competition data, processed data, models, credentials, temporary artifacts, and generated
-submission CSV/Parquet files are Git-ignored. Source, configuration, documentation, reports,
-the environment specification, and official reference materials remain versionable.
-
-LightGBM is the only modelling dependency added in Phase 2. CatBoost, neural-network,
-geospatial, explainability, AutoML, and tuning packages were not added.
-
-## Phase 2 reproduction and evidence
-
-Compact evidence lives in `reports/phase2b/`, `reports/phase2c_horizon_examples_manifest.json`,
-`reports/phase2d/`, and `reports/phase2e_comparison.json`; the seven records are in
-`experiments/registry.csv`. Large OOF predictions, fitted models, and the 2,000,000-row training
-artifact remain Git-ignored under `artifacts/`. Do not rerun expensive production work merely to
-recover reporting telemetry. Phase 3 reporting is summarized in `notebooks/02_core_modeling.ipynb`
-and `reports/phase3_closeout.md`; generated Phase 3 candidates remain local and unuploaded.
-view results.
+The bounded data preflight reads only a sample and updates its compact report:
 
 ```powershell
-# One baseline: approximately 81-145 s and 2.2-2.3 GiB peak
-.\.venv\Scripts\python.exe -m drought_forecasting.deterministic_baselines --baseline persistence
-# Horizon examples: approximately 232 s and 2.1 GiB peak
-.\.venv\Scripts\python.exe -m drought_forecasting.horizon_examples --config configs\phase2c_horizon_examples.yaml
-# Fixed LightGBM: approximately 125 s and 2.1 GiB peak
-.\.venv\Scripts\python.exe -m drought_forecasting.lightgbm_benchmark --config configs\phase2d_lightgbm.yaml
-# Lightweight registry/comparison consolidation
-.\.venv\Scripts\python.exe -m drought_forecasting.phase2_comparison
+uv run python -m drought_forecasting.data_preflight --sample-rows 10000
 ```
 
-The official `references/official/StarterNotebook.ipynb` is protected and unchanged.
+### Analysis and modelling
 
-## Project governance and evidence
+The normal portfolio review path is the tracked configuration, code, notebooks, and compact
+reports. Full feature materialization, OOF generation, model fitting, and submission creation are
+intentionally omitted from the quick start because they consume substantially more time and
+memory. Historical commands and artifact identities are preserved in
+[the Phase 3 reproduction record](docs/phase3_reproduction.md).
 
-- [Competition rules](docs/competition_rules.md)
-- [Organizer clarification register](docs/organizer_clarifications.md)
-- [Compute and reproducibility policy](docs/compute_reproducibility_policy.md)
-- [Frozen validation protocol](docs/validation_protocol.md)
-- [Competition evidence matrix](docs/competition_evidence_matrix.md)
-- [Experiment registry](experiments/README.md)
-- [Living final-report outline](reports/final_report_outline.md)
-- [Phase closeouts](docs/phase_closeouts/README.md)
-- [Decision records](docs/decisions/README.md)
-- [Phase 2 comparison](docs/phase2e_comparison.md)
-- [Baseline walkthrough](notebooks/01_baseline_walkthrough.ipynb)
+## Technology
 
-The frozen protocol and comparable-row identity
-`2b27c3e0d376965789abab1b1f7dcf3577a8d15b374c03d0a312e39fb4607c0a` establish the
-unchanged seven-run population. No recursion, external data, tuning, leaderboard feedback, or
-paid compute was used.
+Python 3.12, Polars, pandas, DuckDB, PyArrow, LightGBM, CatBoost, NumPy, PyYAML, `uv`, pytest,
+Ruff, and Git.
+
+## Project status
+
+The competition closed on 13 September 2026. This repository was closed out on **24 September
+2026** and is archived as a completed portfolio case study; no further model development,
+submissions, or leaderboard experiments are planned. Results reflect the recorded competition
+period. See the [project closeout](reports/project_closeout.md).
+
+## Limitations
+
+- Public-leaderboard performance differed materially from local rolling-origin validation.
+- Hidden test labels prevent complete post-competition error and drift diagnosis.
+- Two validation folds provide limited temporal diversity.
+- Constrained local hardware limited experiment scale and encouraged fixed, memory-aware runs.
+- The selected model is a competition prototype, not a deployed drought-warning system.
+- Forecasting TWS alone does not constitute a complete drought-impact assessment.
+
+## Licensing and third-party materials
+
+No repository-wide software license has been applied because the repository mixes original code
+with organizer-provided reference material. The competition page identifies challenge data as
+CC-BY-SA 4.0 and permits sharing; provenance for the two retained organizer files is recorded in
+[`references/official/README.md`](references/official/README.md). No raw data is distributed here.
+
+## Author
+
+- **Mark Jacob Nyumba**
+- Data Scientist / AI & Machine Learning Engineer
+- [GitHub](https://github.com/BEMOREMJ)

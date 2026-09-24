@@ -1,0 +1,69 @@
+schema_version: phase5-v1
+experiment_id: P5-CAT
+status: preregistered_not_run
+execution_limit: 1
+seed: 20260907
+threads: 2
+target:
+  training: target_minus_last_observed_tws
+  reconstruction: last_observed_tws_plus_predicted_residual
+features:
+  - last_observed_tws
+  - effective_horizon
+  - latitude
+  - longitude
+  - input_calendar_month
+  - month_sin
+  - month_cos
+  - SPEI_01_t
+  - SPEI_03_t
+  - SPEI_06_t
+  - SPEI_12_t
+  - SOIL_MOISTURE_t
+categorical_features: [location_id]
+catboost:
+  package: catboost==1.2.8
+  loss_function: RMSE
+  eval_metric: RMSE
+  iterations: 200
+  learning_rate: 0.05
+  depth: 8
+  l2_leaf_reg: 3.0
+  random_strength: 1.0
+  border_count: 127
+  task_type: CPU
+  thread_count: 2
+  random_seed: 20260907
+  allow_writing_files: false
+  verbose: false
+population:
+  capped: false
+  training: {F01: 1007523, F02: 992477, pooled: 2000000}
+  validation: {F01: 278059, F02: 273906, pooled: 551965}
+feasibility:
+  assessed_without_fit: true
+  projected_peak_memory_mb: 2860
+  maximum_peak_memory_mb: 3000
+  observed_available_ram_mb: 4868.56640625
+  observed_total_ram_mb: 16264.59375
+  observed_free_disk_mb: 51006.7890625
+  full_population_safe: true
+  deterministic_cap: null
+controls:
+  validation: validation-v1
+  recursion: disabled
+  early_stopping: false
+  hyperparameter_search: false
+  gpu: false
+promotion:
+  pooled_rmse_maximum: 0.578923
+  fold_regression_tolerance: 0.005
+  horizon_6_7_regression_tolerance: 0.005
+  recent_regression_tolerance: 0.005
+  coverage_required: 1.0
+  peak_memory_maximum_mb: 3000
+sources:
+  training_artifact: artifacts/phase2c/horizon_training_examples_v1.parquet
+  reference_oof: artifacts/phase3m3b/p3m3b-absolute-oof.parquet
+  validation_id: dfafe4ae008ac4180f3f92a54ca825c779ab4768b0ba870e22dd1cd4e14088c9
+  comparable_rows_id: 2b27c3e0d376965789abab1b1f7dcf3577a8d15b374c03d0a312e39fb4607c0a

@@ -2,7 +2,7 @@
 
 **Status:** accepted foundation decision; Phase 0 is not declared closed.
 
-- Canonical project path: `C:\Users\Mark\Desktop\Personal Projects\Data Science\forecasting_global_water_storage`.
+- Canonical project path: the repository root (machine-independent).
 - Environment: uv-managed Python 3.12, constrained to `>=3.12,<3.13`.
 - Compute: local-first and free-first; the laptop is authoritative.
 - Storage: immutable raw CSVs plus reproducible, ignored Parquet caches.
@@ -12,4 +12,3 @@
   compatibility, validation design and rule compliance.
 
 No model, validation result or Phase 0 closeout is asserted by this decision.
-

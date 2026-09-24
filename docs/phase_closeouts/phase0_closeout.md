@@ -32,8 +32,7 @@ leakage-control, and validation protocol before modelling begins.
 
 ## 2. Starting repository state
 
-Canonical path:
-`C:\Users\Mark\Desktop\Personal Projects\Data Science\forecasting_global_water_storage`.
+Canonical path: the repository root.
 The repository was on unborn branch `main`: no HEAD commit, no staged files, no modified
 tracked files, 37 untracked non-ignored foundation files, and no remotes. No commit hash exists.
 

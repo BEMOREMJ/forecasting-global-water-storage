@@ -85,7 +85,7 @@ Energy/carbon conversion remains pending an approved measurement method.
 
 ## Phase 3 evidence
 
-Report the frozen validation-v1 comparison, recent-period limitation, raw-year drift, residual target, and the promotion decisions. P3-M3B is the sole promoted learned design (0.583923). P3-E1's stronger pooled result is explicitly non-promoted because horizon 6 failed protection. Production reused the deterministic two-million-row Phase 2G sample; both candidates are generated locally and not uploaded.
+Report the frozen validation-v1 comparison, recent-period limitation, raw-year drift, residual target, and the promotion decisions. P3-M3B is the sole promoted learned design (0.583923). P3-E1's stronger pooled result is explicitly non-promoted because horizon 6 failed protection. Production reused the deterministic two-million-row Phase 2G sample. The generated candidates remain Git-ignored; later public-result metadata is recorded separately and cannot alter validation-v1.
 
 ### Phase 3 public-result evidence (post-closeout)
 
@@ -98,3 +98,14 @@ cardinal-neighbour residual features 0.778214, and fixed 24-month-half-life rece
 0.584126. The recency model preserved folds, horizons 6/7, coverage, and the recent diagnostic but
 missed the 0.578923 pooled promotion gate and was slightly worse than P3-M3B. CatBoost was not
 installed, so the registered LightGBM fallback was used. No candidate or ensemble was generated.
+
+## Phase 5 evidence and final recommendation
+
+Record the user-reported pure-persistence public score of 0.886420231 as a rejected diagnostic;
+P3-M3B improves on it by 0.120011702. CatBoost 1.2.8 was evaluated exactly once using the
+P3-M3B persistence-residual target and no-year numeric features, plus canonical location ID as a
+categorical feature. Its pooled OOF RMSE was 0.609268 (F01 0.619263; F02 0.598950), with 100%
+coverage, observed/masked RMSE 0.552915/0.635663, horizons 6/7 at 0.668989/0.700675, and recent
+RMSE 0.602518. It failed pooled, fold-stability, long-horizon, and recent-period gates. No Phase 5
+candidate was generated. Recommend P3-M3B for finalization; P3-E1 remains diagnostic-only despite
+its lower local OOF because its promotion protection failed and its public result was poor.

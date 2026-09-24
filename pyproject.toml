@@ -5,6 +5,7 @@ description = "Reproducible forecasting workflow for the Global Water Storage Ch
 readme = "README.md"
 requires-python = ">=3.12,<3.13"
 dependencies = [
+    "catboost==1.2.8",
     "duckdb",
     "lightgbm>=4.7.0",
     "numpy",

@@ -1,0 +1,18 @@
+{
+  "schema_version": "submission-public-result-v1",
+  "candidate_identity": {
+    "source_record": "reports/phase3h_production_manifest.json",
+    "role": "persistence_diagnostic",
+    "rows": 280961,
+    "columns": ["ID", "Target"],
+    "official_order": true
+  },
+  "candidate_sha256": "edf8a40f74ab227e0485b02a4cf489893a3118dda2eafc896a8ffd063b9de9c7",
+  "submission_date": "2026-09-07",
+  "status": "uploaded diagnostic and rejected",
+  "public_score": 0.886420231,
+  "p3_m3b_improvement_over_persistence": 0.120011702,
+  "evidence_source": "User-reported Zindi interface.",
+  "snapshot_warning": "Leaderboard observations are provisional and may change.",
+  "validation_policy": "Public results cannot alter validation-v1."
+}
